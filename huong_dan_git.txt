@@ -49,9 +49,33 @@ git diff <nhánh_thứ_nhất> <nhánh_thứ_hai>
 
 
 rm -rf .git
-git init
-git add .
-git commit -m "Initial commit of the project"
-git branch -M main
-git remote add origin https://github.com/datld47/django-web-blog.git
-git push -u origin main
+
+
+#Các lệnh cơ bản
+
+git init                                                                     -- khởi tạo git cho dự án
+git add .                                                                    -- thông báo git thay đổi cho git sẽ xuất hiện chứ A
+git commit -m "Initial commit of the project"                                -- commit dự án lên máy cục bộ
+git tag -a <name> -m "Your tag message"                                      -- đặt tên tag
+git branch -M main                                                           -- di chuyển  đến nhánh main                           
+git remote add origin https://github.com/datld47/django-web-blog.git         -- remote đến reposity
+git push -u origin main                                                      -- đẩy lên reposity
+
+#di chuyển các tag: Mục đích di chuyển các lịch sử thay đổi
+
+git tag                                                                     --Hiện thị các danh sách tag
+git checkout <tag_name>                                                     -- không thuộc bất cứ nhánh nào : quay về các lịch sử
+git checkout main                                                           -- quay lại nhánh main
+
+#đẩy tag lên reposity
+
+git push origin <tag_name>       -- push cụ thể một tag
+git push origin --tags           -- push tất cả các tag
+
+#Khi thực hiện hành động kéo dự án về:
+git checkout main                   --Đảm bảo đứng ở nhánh chính
+git pull origin main                --Kéo dư án mới nhất về
+git pull origin --tags              --Kéo các tag về  # Đảm bảo có tất cả các tags từ remote
+git checkout -b <new_branch_name> <tag_name>   --Tạo nhánh mới  với tag trong danh sách   và bắt đầu làm từ đây
+
+
