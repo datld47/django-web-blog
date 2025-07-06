@@ -26,4 +26,5 @@ COPY . /app/
 
 ENV PORT=8080
 
-CMD ["sh", "-c", "/usr/local/bin/gunicorn --bind 0.0.0.0:${PORT} --workers 3 my_site.wsgi:application"]
+#CMD ["sh", "-c", "/usr/local/bin/gunicorn --bind 0.0.0.0:${PORT} --workers 3 my_site.wsgi:application"]
+CMD ["sh", "-c", "/usr/local/bin/gunicorn --bind 0.0.0.0:${PORT} --workers 3 --timeout 120 --preload --log-level debug my_site.wsgi:application"]

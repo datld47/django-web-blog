@@ -14,9 +14,8 @@ __pycache__
 *.bmp
 *.tiff
 
-
 # Bỏ qua các thư mục staticfiles và uploads trên máy host
 # vì chúng sẽ được tạo ra/quản lý bên trong container hoặc qua Docker Volumes
-# staticfiles/
-# uploads/
+staticfiles/
+uploads/
 

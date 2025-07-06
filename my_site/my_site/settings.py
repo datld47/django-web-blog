@@ -23,22 +23,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-m=q@#d_!%70t&$h66vkjc&sf3165g34)(2&j$-=(o*23avjt7x'
-SECRET_KEY = os.getenv('SECRET_KEY_PROD', 'django-insecure-m=q@#d_!%70t&$h66vkjc&sf3165g34)(2&j$-=(o*23avjt7x')
+SECRET_KEY = os.getenv('SECRET_KEY_PROD', 'django-insecure-m=q@#d_!%70t&$h66vkjc&sf3165g34)(2&j$-=(o*23avjt7x').strip('')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 
-
-APP_HOST_STR = os.getenv('APP_HOST', 'localhost,127.0.0.1') # Lấy từ biến môi trường
-ALLOWED_HOSTS = [host.strip() for host in APP_HOST_STR.split(',') if host.strip()]
-ALLOWED_HOSTS.append(os.getenv('K_SERVICE', ''))
-ALLOWED_HOSTS = [host for host in ALLOWED_HOSTS if host]
+USE_SETTING_DEFAULT=os.getenv('SETTING_DEFAUT','True').lower()=='true'
 
 
-CSRF_TRUSTED_ORIGINS_STR = os.getenv('TRUSTED_CSRF_APP_HOST', 'http://localhost:8000,http://127.0.0.1:8000') # Lấy từ biến môi trường
-CSRF_TRUSTED_ORIGINS = [host.strip() for host in CSRF_TRUSTED_ORIGINS_STR.split(',') if host.strip()]
-CSRF_TRUSTED_ORIGINS = [host for host in CSRF_TRUSTED_ORIGINS if host]
+if USE_SETTING_DEFAULT:
+    ALLOWED_HOSTS=[]
+else:
+    APP_HOST_STR = os.getenv('APP_HOST', 'localhost,127.0.0.1') # Lấy từ biến môi trường
+    ALLOWED_HOSTS = [host.strip() for host in APP_HOST_STR.split(',') if host.strip()]
+    ALLOWED_HOSTS.append(os.getenv('K_SERVICE', ''))
+    ALLOWED_HOSTS = [host for host in ALLOWED_HOSTS if host]
+
+    CSRF_TRUSTED_ORIGINS_STR = os.getenv('TRUSTED_CSRF_APP_HOST', 'http://localhost:8000,http://127.0.0.1:8000') # Lấy từ biến môi trường
+    CSRF_TRUSTED_ORIGINS = [host.strip() for host in CSRF_TRUSTED_ORIGINS_STR.split(',') if host.strip()]
+    CSRF_TRUSTED_ORIGINS = [host for host in CSRF_TRUSTED_ORIGINS if host]
 
 
 # Application definition
@@ -51,8 +55,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
 ]
+
+if USE_SETTING_DEFAULT == False:
+     INSTALLED_APPS.append('storages')
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,47 +91,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'my_site.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# if DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-# else:
-#     # Cấu hình PostgreSQL cho Production
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql', # Sử dụng PostgreSQL
-#             'NAME': getenv('POSTGRES_DB'),
-#             'USER': getenv('POSTGRES_USER'),
-#             'PASSWORD': getenv('POSTGRES_PASSWORD'),
-#             'HOST': getenv('POSTGRES_HOST', 'db'), # 'db' là tên service của PostgreSQL trong docker-compose.yml
-#             'PORT': getenv('POSTGRES_PORT', '5432'),
-#         }
-#     }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql', # Sử dụng PostgreSQL
-        'NAME': os.getenv('POSTGRES_DB','mydjangodb'),
-        'USER': os.getenv('POSTGRES_USER','dat'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD','111111'),
-        'HOST': os.getenv('POSTGRES_HOST', '34.133.203.78'), # 'db' là tên service của PostgreSQL trong docker-compose.yml
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+if USE_SETTING_DEFAULT:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql', # Sử dụng PostgreSQL
+            'NAME': os.getenv('POSTGRES_DB','mydjangodb'),
+            'USER': os.getenv('POSTGRES_USER','dat'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD','111111'),
+            'HOST': os.getenv('POSTGRES_HOST', '34.133.203.78'), # 'db' là tên service của PostgreSQL trong docker-compose.yml
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        }
+    }
 
 
 # Password validation
@@ -161,68 +148,59 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-
-
-    
-#     STATIC_URL = 'static/'
-
-#     STATICFILES_DIRS=[
-#         BASE_DIR / "static"
-#     ]
-
-#     MEDIA_ROOT=BASE_DIR / "uploads"
-#     MEDIA_URL="/files/"
-        
-
 STATICFILES_DIRS=[
         BASE_DIR / "static"
     ]
 
-GS_QUERYSTRING_AUTH = False
+if USE_SETTING_DEFAULT:
 
-GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME','my-django-app-static-media-dat')
-GS_STATIC_LOCATION = 'static' # Thư mục trong bucket cho static files
-GS_MEDIA_LOCATION = 'media'   # Thư mục trong bucket cho media files
+        STATIC_URL = 'static/'
+        MEDIA_ROOT=BASE_DIR / "uploads"
+        MEDIA_URL="/files/"
+    
+else:        
 
-# STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/{GS_STATIC_LOCATION}/'
+    GS_QUERYSTRING_AUTH = False
 
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'gcp-sa-key.json')
-)
+    GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME','my-django-app-static-media-dat')
+    GS_STATIC_LOCATION = 'static' # Thư mục trong bucket cho static files
+    GS_MEDIA_LOCATION = 'media'   # Thư mục trong bucket cho media files
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-        "OPTIONS": {
-            "bucket_name": GS_BUCKET_NAME,
-            "location": "media",
-            "default_acl": "publicRead",
-            "credentials": GS_CREDENTIALS,
-            "querystring_auth": False,
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+        os.path.join(BASE_DIR,  os.getenv('GOOGLE_APPLICATION_CREDENTIALS','gcp-sa-key.json'))
+    )
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": GS_BUCKET_NAME,
+                "location": "media",
+                "default_acl": "publicRead",
+                "credentials": GS_CREDENTIALS,
+                "querystring_auth": False,
+            },
         },
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-        "OPTIONS": {
-            "bucket_name": GS_BUCKET_NAME,
-            "location": "static",
-            "default_acl": "publicRead",
-            "credentials": GS_CREDENTIALS,
-            "querystring_auth": False,
+        "staticfiles": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": GS_BUCKET_NAME,
+                "location": "static",
+                "default_acl": "publicRead",
+                "credentials": GS_CREDENTIALS,
+                "querystring_auth": False,
+            },
         },
-    },
-}
+    }
 
-STATIC_ROOT = BASE_DIR / "staticfiles" # Vẫn cần cho collectstatic cục bộ
-MEDIA_ROOT = BASE_DIR / "uploads" # Vẫn cần cho tải lên tạm thời trước khi đẩy lên GCS
+    STATIC_ROOT = BASE_DIR / "staticfiles" # Vẫn cần cho collectstatic cục bộ
+    MEDIA_ROOT = BASE_DIR / "uploads" # Vẫn cần cho tải lên tạm thời trước khi đẩy lên GCS
 
-STATIC_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/{GS_STATIC_LOCATION}/"
-MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/{GS_MEDIA_LOCATION}/"
+    STATIC_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/{GS_STATIC_LOCATION}/"
+    MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/{GS_MEDIA_LOCATION}/"
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-#https://storage.googleapis.com/my-django-app-static-media-dat/static'
