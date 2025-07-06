@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    My Blog
+{% endblock  %}
+
+{% block css_files %}
+
+    {% comment %} <link rel="stylesheet" href="{% static "blog/post.css" %}"/>  {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static "blog/index.css" %}"/> {% endcomment %}
+    
+{% endblock %}
+
+{% block content %}
+
+    <section id="welcome">
+        <header>
+            <img src="{% static "blog/images/max.jpg" %}", alt="Max-the author of this Blog"/>
+            <h2>MAX'S BLOG</h2>
+        </header>
+        <p>Hi, I am Max and I love to blog about tech and the world! </p>
+    </section>
+
+    <section id="lastest-posts">
+        <h2>My lastest thoughts</h2>
+        <ul>
+            {% for post in posts  %}
+                {% include "blog/includes/post.html" %}
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section id="about">
+        <h2>What I Do</h2>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eius.
+        </p>
+        <p>
+            Lorem ipsum dolor sit amet.
+        </p>
+    </section>    
+{% endblock  %}
+
+

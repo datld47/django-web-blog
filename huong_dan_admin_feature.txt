@@ -1,0 +1,6 @@
+(myenv) D:\DAT\web_tutor_ai\book_store>python manage.py createsuperuser
+Username (leave blank to use 'dat_dong_a'): datld
+Email address: datldsave@gmail.com
+Password: 
+Password (again): 
+Superuser created successfully.

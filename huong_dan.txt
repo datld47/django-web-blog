@@ -1,0 +1,164 @@
+//cai dat moi truong ao
+pip install virtualenv
+virtualenv  myenv
+cd myenv/Scripts
+activate
+ctrl+shift+P:  python:select interpreter chon  python(myenv)
+
+//tao requirements
+pip freeze > requirements.txt
+//cai dat requirements
+pip install -r requirements.txt
+
+//---cai dat thu vien
+pip install django
+//---tao project---
+django-admin startproject simple_messenger_project
+//---tao app---
+python manage.py startapp tutor_ai_app
+//--tao migrations
+python manage.py makemigrations
+//--di chuyen migrate
+python manage.py migrate
+
+//--django shell
+python manage.py shell
+
+//--insert--
+>>> from book_outlet.models import Book
+>>> harry_potter=Book(title='Harry Potter 1',rating=5)
+>>> harry_potter.save()
+>>> lord_of_the_rings=Book(title='Lord of the Rings',rating=4)
+>>> lord_of_the_rings.save()
+
+//--Querry--
+>>> Book.objects.all()
+<QuerySet [<Book: Book object (1)>, <Book: Book object (2)>]> 
+
+>>> Book.objects.all()[1]
+<Book: Lord of the Rings (4)>
+>>> Book.objects.all()[1].author
+>>> 
+
+//--Update--
+>>> harry_potter=Book.objects.all()[0]
+>>> harry_potter.title
+>>> harry_potter.author='Rowling'
+>>> harry_potter.is_bestselling=True
+>>> harry_potter.save()
+>>> Book.objects.all()[0].author
+'Rowling'
+
+>>> lotr=Book.objects.all()[1]
+>>> lotr.title  
+'Lord of the Rings' 
+>>> lotr.author='Tolkien' 
+>>> lotr.is_bestselling=True
+>>> lotr.save()
+>>> Book.objects.all()[1].author
+'Tolkien'
+>>> Book.objects.all()[1].is_bestselling
+True
+
+//--Delete--
+>>> harry_potter=Book.objects.all()[0]
+>>> harry_potter.delete()
+(1, {'book_outlet.Book': 1})
+>>> Book.objects.all()
+<QuerySet [<Book: Lord of the Rings (4)>]>
+>>>
+
+//filter
+//--insert 
+>>> Book.objects.create(title='Harry Potter 1',rating=5,author='Rowling',is_bestselling=True) 
+>>> Book.objects.all()                                                          
+<QuerySet [<Book: Lord of the Rings (4)>, <Book: Harry Potter 1 (5)>]>
+>>> Book.objects.create(title='My Story',rating=1,author='abc',is_bestselling=False)
+<Book: My Story (1)>
+>>> Book.objects.create(title='My Story 2',rating=1,author='abc',is_bestselling=False)
+<Book: My Story 2 (1)>
+>>> Book.objects.all()
+<QuerySet [<Book: Lord of the Rings (4)>, <Book: Harry Potter 1 (5)>, <Book: My Story (1)>, <Book: My Story 2 (1)>]>
+>>>
+
+//get only record , error when result return many record -- use with id  ok
+>>> Book.objects.get(id=3)
+<Book: Harry Potter 1 (5)>
+>>> Book.objects.get(id=4) 
+<Book: My Story (1)>
+
+>>> Book.objects.get(title='My Story')
+<Book: My Story (1)>
+
+>>> Book.objects.get(is_bestselling=True)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "D:\DAT\web_tutor_ai\myenv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\DAT\web_tutor_ai\myenv\Lib\site-packages\django\db\models\query.py", line 636, in get
+    raise self.model.MultipleObjectsReturned(
+book_outlet.models.Book.MultipleObjectsReturned: get() returned more than one Book -- it returned 2!
+>>> 
+
+>>> Book.objects.filter(is_bestselling=True)
+<QuerySet [<Book: Lord of the Rings (4)>, <Book: Harry Potter 1 (5)>]>
+
+>>> Book.objects.filter(rating<3)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'rating' is not defined
+
+>>> Book.objects.filter(rating__lte=3) 
+<QuerySet [<Book: My Story (1)>, <Book: My Story 2 (1)>]>
+
+>>> Book.objects.filter(rating__lt=3)  
+<QuerySet [<Book: My Story (1)>, <Book: My Story 2 (1)>]>
+
+>>> tmp=Book.objects.filter(title__contains='Story')
+>>> tmp
+<QuerySet [<Book: My Story (1)>, <Book: My Story 2 (1)>]>
+
+>>> Book.objects.all()
+<QuerySet [<Book: Lord of the Rings (4)>, <Book: Harry Potter 1 (5)>, <Book: My Story (1)>, <Book: My Story 2 (1)>]>
+>>> tmp=Book.objects.all()[3]
+>>> tmp.title
+'My Story 2'
+>>> tmp.title='hecman'
+>>> tmp.save()
+>>> Book.objects.all()
+<QuerySet [<Book: Lord of the Rings (4)>, <Book: Harry Potter 1 (5)>, <Book: My Story (1)>, <Book: hecman (1)>]>
+
+
+>>> Book.objects.all()
+<QuerySet [<Book: Lord of the Rings|4|Tolkien|True)>, <Book: Harry Potter 1|5|Rowling|True)>, <Book: My Story|1|abc|False)>, <Book: hecman|3|abc|False)>]>
+
+>>> Book.objects.filter(rating__lte=3)
+<QuerySet [<Book: My Story|1|abc|False)>, <Book: hecman|3|abc|False)>]>
+
+>>> Book.objects.filter(rating__lt=3)  
+<QuerySet [<Book: My Story|1|abc|False)>]>
+
+//--and
+
+>>> Book.objects.filter(rating__lt=3,title__contains='Story')
+<QuerySet [<Book: My Story (1)>]>
+
+//--or--
+ from django.db.models import Q
+
+
+//slug
+
+>>> Book.objects.filter(Q(rating__lt=3) | Q(is_bestselling=True))
+<QuerySet [<Book: Lord of the Rings|4|Tolkien|True)>, <Book: Harry Potter 1|5|Rowling|True)>, <Book: My Story|1|abc|False)>]>
+
+>>> Book.objects.filter(Q(rating__lt=3)|Q(is_bestselling=True),Q(author='Rowling'))
+<QuerySet [<Book: Harry Potter 1|5|Rowling|True)>]>
+
+>>> from book_outlet.models import Book
+>>> Book.objects.all()
+<QuerySet [<Book: 2|Lord of the Rings|4|Tolkien|True)|>, <Book: 3|Harry Potter 1|5|Rowling|True)|>, <Book: 4|My Story|1|abc|False)|>, <Book: 5|hecman|3|abc|False)|>]>
+>>> Book.objects.get(id=3).save()
+>>> Book.objects.all()
+<QuerySet [<Book: 2|Lord of the Rings|4|Tolkien|True)|>, <Book: 3|Harry Potter 1|5|Rowling|True)|harry-potter-1>, <Book: 4|My Story|1|abc|False)|>, <Book: 5|hecman|3|abc|False)|>]>

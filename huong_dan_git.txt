@@ -1,0 +1,57 @@
+//cai dat git
+
+git --version
+git config --global user.name datld47
+git config --global user.email datldsave@gmail.com
+git init
+git add .
+git commit -m "Initial commit of WEB_TUTOR_AI project"
+git push -u origin main
+
+//mot so lenh thao tac tren git
+git remote add origin https://github.com/datld47/tutor-ai-app.git
+git branch -M main
+git push -u origin main
+
+
+//---Tao mot nhanh moi---
+git branch dat-branch-003
+
+git checkout -d 001_Chuoi_thoat
+//---Di chuyen den nhanh bat ky---
+git checkout 001_Chuoi_thoat
+//---push du lieu nhanh len store---
+git add .
+git commit -m "message to note"
+git push -u origin 001_Chuoi_thoat
+
+//---ghep nhanh phu vao nhanh chinh---
+git checkout main
+git pull origin main
+git merge 001_Chuoi_thoat
+git branch -d 001_Chuoi_thoat
+git push origin --delete 001_Chuoi_thoat
+
+
+//---quay lai cac phien ban cung nhanh - su dung hash---
+git log --oneline --graph --all
+
+* 118c253 (main) branch-dat-001-v1.0.3
+* 960dbc5 branch-dat-001-v1.0.2
+* 1a8d5c6 branch-dat-001-v1.0.1
+* 5b77354 branch-dat-001-v1.0
+* 786110f branch-dat-001-v1.0
+
+git revert 118c253 
+
+
+git diff <nhánh_thứ_nhất> <nhánh_thứ_hai>
+
+
+rm -rf .git
+git init
+git add .
+git commit -m "Initial commit of the project"
+git branch -M main
+git remote add origin https://github.com/datld47/django-web-blog.git
+git push -u origin main

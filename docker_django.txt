@@ -1,0 +1,38 @@
+docker-compose build
+docker-compose up -d db
+docker-compose run --rm web python manage.py migrate
+docker-compose run --rm web python manage.py createsuperuser
+docker-compose run --rm web python manage.py collectstatic --noinput
+docker-compose up -d
+docker-compose ps
+
+
+dừng dịch vụ
+
+docker-compose down
+
+
+docker-compose exec web env
+
+docker-compose exec web env DJANGO_SETTINGS_MODULE=my_site.settings python -c "from django.conf import settings; print(settings.ALLOWED_HOSTS)"
+
+
+['localhost', '127.0.0.1']
+
+
+docker-compose logs -f web
+
+docker-compose logs -f nginx
+
+
+
+
+docker-compose down -v
+docker-compose build web
+docker-compose up -d db
+docker-compose run --rm web python manage.py migrate
+docker-compose run --rm web python manage.py collectstatic --noinput
+docker-compose up -d
+
+
+docker-compose exec nginx sh  

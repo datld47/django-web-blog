@@ -1,0 +1,24 @@
+tao static rooot trong file setting: STATIC_ROOT=BASE_DIR / "staticfiles"
+
+python manage.py collectstatic
+
+134 static files copied to 'E:\project\PROJECT_PYTHON_DJANGO\DJANGO-TRAINING\my_site\staticfiles'.
+
+
+python manage.py makemigrations
+python manage.py migrate
+
+
+pip freeze > requirements.txt
+
+
+//cai dat ALLOWED_HOSTS
+from os import getenv
+
+DEBUG = getenv('IS_PRODUCTION',True)
+
+ALLOWED_HOSTS = [getenv('APP_HOST')]
+
+
+
+

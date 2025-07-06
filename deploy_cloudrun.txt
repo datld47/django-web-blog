@@ -1,0 +1,40 @@
+docker build -t us-central1-docker.pkg.dev/gemini-18-460419/cloud-run-source-deploy/my-django-app:latest .
+docker push us-central1-docker.pkg.dev/gemini-18-460419/cloud-run-source-deploy/my-django-app:latest
+
+gcloud run jobs deploy my-django-app-migrate-job \
+  --image us-central1-docker.pkg.dev/gemini-18-460419/cloud-run-source-deploy/my-django-app:latest \
+  --region us-central1 \
+  --command "python" \
+  --args "manage.py" \
+  --args "migrate" \
+  --set-env-vars POSTGRES_HOST=34.133.203.78,POSTGRES_PORT=5432 \
+  --set-secrets SECRET_KEY_PROD=my-django-app-secret-key:latest,POSTGRES_DB=my-django-app-db-name:latest,POSTGRES_USER=my-django-app-db-user:latest,POSTGRES_PASSWORD=my-django-postges-db-password:latest \
+  --cpu 1 \
+  --memory 512Mi \
+  --task-timeout 300 \
+  --tasks 1
+
+gcloud run jobs execute my-django-app-migrate-job \
+  --region us-central1
+
+
+
+//tổng hợp static file trước 
+python manage.py collectstatic --noinput
+gsutil -m cp -r my_site/staticfiles/* gs://my-django-app-static-media-dat/static/
+
+
+gcloud run services list --platform managed --region us-central1
+
+
+
+
+gcloud run deploy my-django-app-check-static-url \
+  --image us-central1-docker.pkg.dev/gemini-18-460419/cloud-run-source-deploy/my-django-app:latest2 \
+  --platform managed \
+  --region us-central1 \
+  --command "python" \
+  --args "-c \"from django.conf import settings; print(settings.STATIC_URL); print(settings.GS_BUCKET_NAME); print(settings.GS_STATIC_LOCATION)\"" \
+  --no-allow-unauthenticated \
+  --set-env-vars DJANGO_SETTINGS_MODULE=my_site.settings,DEBUG=False,GS_BUCKET_NAME=my-django-app-static-media-dat \
+  --cpu 0.5 --memory 256Mi --timeout 60

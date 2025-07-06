@@ -1,0 +1,22 @@
+.git
+.venv
+venv
+__pycache__
+*.pyc
+*.sqlite3
+.DS_Store
+*.env
+
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+
+
+# Bỏ qua các thư mục staticfiles và uploads trên máy host
+# vì chúng sẽ được tạo ra/quản lý bên trong container hoặc qua Docker Volumes
+# staticfiles/
+# uploads/
+

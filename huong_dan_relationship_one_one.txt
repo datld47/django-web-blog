@@ -1,0 +1,20 @@
+python manage.py shell
+
+>>> from book_outlet.models import Book,Author,Address
+>>> Author.objects.all()
+<QuerySet [<Author: J.K Rowling>, <Author: Fujio Fujiko>]>
+>>> Author.objects.all()[0].address
+>>> addr1=Address(street='Some Street',postal_code='12345',city='London')
+>>> addr2=Address(street='Another Street',postal_code='6789',city='New York')
+>>> addr1.save()
+>>> addr2.save()
+>>> Address.objects.all()
+<QuerySet [<Address: Address object (1)>, <Address: Address object (2)>]>
+>>> jkr=Author.objects.get(first_name='J.K')
+>>> jkr.address=addr1
+>>> jkr.save()
+>>> jkr.address.street
+'Some Street'
+>>> Address.objects.all()[0].author.first_name
+'J.K'
+>>>

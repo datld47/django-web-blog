@@ -1,0 +1,11 @@
+{
+    // Các cài đặt khác của bạn (nếu có)
+    "files.associations": {
+        "**/*.html": "django-html", // Đây là dòng quan trọng nhất
+        "**/templates/**/*.html": "django-html", // Đảm bảo tất cả HTML trong templates được nhận diện
+        "**/templates/**/*.txt": "django-txt" // (Tùy chọn) nếu bạn có template dạng .txt
+    },
+    "emmet.includeLanguages": {
+        "django-html": "html" // Cho phép Emmet hoạt động trong file Django HTML
+    }
+}

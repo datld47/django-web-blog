@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  web:
+    # Build context là thư mục hiện tại (DJANGO-TRAINING/)
+    build: .
+    command: gunicorn --bind 0.0.0.0:${PORT}  --workers 3 my_site.wsgi:application
+    expose:
+      - ${PORT}
+    ports: # QUAN TRỌNG: Dòng này phải có để truy cập từ máy host
+      - "8000:${PORT}" # Ánh xạ cổng 8000 của máy host tới cổng ${PORT} (8080) của container
+    # Env file nằm trong thư mục hiện tại
+    env_file:
+      - .env
+    # depends_on:
+    #   - db
+    volumes:
+      # Gắn static_volume vào thư mục STATIC_ROOT của Django trong web container
+      # Đây là nơi collectstatic đã ghi các tệp tĩnh
+      - ./gcp-sa-key.json:/app/gcp-sa-key.json:ro 
+      - static_volume:/app/staticfiles
+      # Gắn media_volume vào thư mục MEDIA_ROOT của Django trong web container
+      # Đây là nơi Django sẽ ghi các tệp do người dùng upload
+      - media_volume:/app/uploads
+    # ----------------------------------
+
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     # Nginx config nằm trong thư mục nginx/ ở cấp hiện tại
+  #     - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+  #     #- ./nginx/proxy_params:/etc/nginx/proxy_params:ro
+  #     # Volume ánh xạ đến STATIC_ROOT và MEDIA_ROOT
+  #     # Đảm bảo đường dẫn này khớp với cấu hình trong settings.py và collectstatic
+  #     - static_volume:/vol/static  # Nơi Nginx tìm static files
+  #     - media_volume:/vol/media    # Nơi Nginx tìm media files
+  #   depends_on:
+  #     - web
+
+  # db:
+  #   image: postgres:13-alpine
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   env_file:
+  #     - .env
+
+volumes:
+  # postgres_data:
+  static_volume:
+  media_volume:

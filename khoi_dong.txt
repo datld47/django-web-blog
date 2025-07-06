@@ -1,0 +1,26 @@
+Tóm tắt luồng hoạt động
+Khởi động: Khi bạn chạy docker-compose up, Docker Compose sẽ:
+
+Tạo các volume postgres_data, static_volume, media_volume.
+
+Khởi động container db (PostgreSQL) và tải cấu hình từ .env.
+
+Sau khi db khởi động, nó sẽ xây dựng và khởi động container web (ứng dụng Django với Gunicorn), tải cấu hình từ .env.
+
+Sau khi web khởi động, nó sẽ khởi động container nginx, ánh xạ cổng 80 của host và các volume static/media, đồng thời tải cấu hình từ nginx/default.conf.
+
+Yêu cầu web:
+
+Người dùng truy cập vào cổng 80 của máy chủ (ví dụ: http://localhost).
+
+Yêu cầu đến container nginx.
+
+Nếu yêu cầu là tệp tĩnh hoặc tệp media: Nginx sẽ phục vụ trực tiếp các tệp từ static_volume hoặc media_volume.
+
+Nếu yêu cầu là một yêu cầu động (ví dụ: truy cập một URL của Django): Nginx sẽ proxy yêu cầu đó đến cổng 8000 của container web (Gunicorn).
+
+Gunicorn trong container web sẽ xử lý yêu cầu bằng ứng dụng Django.
+
+Ứng dụng Django sẽ tương tác với cơ sở dữ liệu PostgreSQL trong container db (sử dụng các biến môi trường được định nghĩa trong .env).
+
+Kết quả từ Django sẽ được Gunicorn gửi lại cho Nginx, và Nginx sẽ gửi lại cho người dùng.

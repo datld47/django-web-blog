@@ -1,0 +1,53 @@
+python manage.py shell
+
+>>> from book_outlet.models import Book,Author
+>>> jkrowing=Author(first_name='J.K',last_name='Rowling')
+>>> jkrowing.save()
+>>> Author.objects.all()
+<QuerySet [<Author: Author object (1)>]>
+>>> hp1=Book(title="Harry Potter 1",rating=5,is_bestselling=True,slug='harry-potter-1')
+>>> hp1=Book(title="Harry Potter 1",rating=5,is_bestselling=True,slug='harry-potter-1',author=jkrowing)
+>>> hp1.save()
+>>> Book.objects.all()
+<QuerySet [<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>]>
+>>> harrypotter=Book.objects.get(id=1)
+>>> harrypotter.author
+<Author: Author object (1)>
+>>> harrypotter.author.first_name
+'J.K'
+>>> harrypotter.author.last_name
+'Rowling'
+>>>
+
+//--Querry: tim tat ca cuon sach co ho la Rowling: cross Querry
+
+>>> books_by_rowling=Book.objects.filter(author__last_name='Rowling')
+>>> books_by_rowling
+<QuerySet [<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>]>
+
+>>> books_by_rowling=Book.objects.filter(author__last_name__contains='wling')
+>>> books_by_rowling
+<QuerySet [<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>]>
+
+
+//--tu tac gia  lay cac sach thuoc ve tac gia
+
+>>> jkr=Author.objects.get(first_name='J.K')
+>>> jkr
+<Author: Author object (1)>
+>>> jkr.book_set
+<django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager object at 0x000001BAE8A79940>
+>>> jkr.book_set.all()
+<QuerySet [<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>]>
+
+>>> jkr=Author.objects.get(first_name='J.K')
+>>> jkr
+<Author: Author object (1)>
+>>> jkr.Books.all() 
+<QuerySet [<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>]>
+
+>>> jkr.Books.get(title='Harry Potter 1')
+<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>
+>>> jkr.Books.filter(rating__gt=3)
+<QuerySet [<Book: 1|Harry Potter 1|5|Author object (1)|True)|harry-potter-1>]>
+>>>

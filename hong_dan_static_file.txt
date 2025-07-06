@@ -1,0 +1,16 @@
+static url:   duong dan den static root
+
+media url: duong dan den media root
+
+- moi truong phat trien:
+
+tai server web                                         tai bucket gcs
+static root  ->ung dung storages  day len   gcs        file nam o day:   duoc truy cap qua   static uRL
+media  root  ->ung dung storages  day len   gcs        file nam o day:   duoc truy cap qua   media url
+
+
+- lenh tong hop static 
+python manage.py collectstatic --noinput --verbosity 2
+
+gsutil -m cp -r ./staticfiles/* gs://my-django-app-static-media-dat/static/      
+gsutil -m cp -r ./uploads/* gs://my-django-app-static-media-dat/media/     
