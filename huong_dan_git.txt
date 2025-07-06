@@ -79,3 +79,20 @@ git pull origin --tags              --Kéo các tag về  # Đảm bảo có t�
 git checkout -b <new_branch_name> <tag_name>   --Tạo nhánh mới  với tag trong danh sách   và bắt đầu làm từ đây
 
 
+
+
+//hủy việc commit cục bộ
+git reset HEAD~1
+git checkout -b test-branch-protection
+git commit -m "Feature: Add test line via PR"
+
+
+
+
+//sau khi phê duyệt xong- nhánh main đã hợp nhất
+
+git checkout main       # Đảm bảo bạn đang ở nhánh main
+git pull origin main    # Kéo các thay đổi mới nhất từ remote về
+git branch -d test-branch-protection
+
+
