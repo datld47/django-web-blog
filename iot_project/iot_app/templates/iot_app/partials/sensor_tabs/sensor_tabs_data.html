@@ -1,0 +1,29 @@
+
+<h2 style="text-align:center; border:solid; background-color:black; color:white; padding: 10px; ">Chi tiết dữ liệu cảm biến</h2>
+
+<div id="sensor-data-buttons" style="margin-bottom: 10px;"></div>
+
+<div class="sensor-data__form-search">
+  
+  <label>Từ ngày:
+      <input type="datetime-local" id="sensor-data-form-search-from_date">
+    </label>
+    <label>Đến ngày:
+      <input type="datetime-local" id="sensor-data-form-search-to_date">
+    </label>
+
+    <button id="sensor-data-form-search-btn-search">Tìm kiếm</button>
+    <button id="sensor-data-form-search-btn-reset">Đặt lại</button>
+</div>
+
+<table id="sensor-data-table" class="display" style="width:100%">
+  <thead>
+      <tr>
+          <th>STT</th>
+          <th>Thời gian thiết bị</th>
+          <th>Giá trị</th>
+          <th>Loại cảm biến</th>
+          <th>Thời gian server</th>
+      </tr>
+  </thead>
+</table>

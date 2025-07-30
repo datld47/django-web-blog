@@ -1,0 +1,33 @@
+{% load static %}
+
+<div id="esp-detail-container">
+  
+  
+  <div id="esp_tabs" class="my-custom-tabs">
+        <!-- Các tiêu đề Tab -->
+        <ul>
+            <li><a href="#tab-info">Thông tin chung</a></li>
+            <li><a href="#tab-sensors">Cảm biến</a></li>
+            <li><a href="#tab-charts">Biểu đồ</a></li>
+            <li><a href="#tab-debug">Gửi lệnh</a></li>
+            <li><a href="#tab-config">Cấu hình</a></li>
+        </ul>
+          <!-- Nội dung của từng Tab -->
+        <div id="tab-info">
+            {% include "iot_app/partials/esp_tabs/esp_tabs_info.html" with esp=esp sensors=sensors%}
+        </div>
+
+         <div id="tab-sensors">
+            <div class="esp-sensors__checkbox-update">
+                <input type="checkbox" id="esp-sensors-checkbox-update" />Tự cập nhật mỗi 5 giây
+            </div>
+
+            <div id="esp-sensors-container"></div>
+        </div>
+
+        <div id="tab-charts">
+            {% include "iot_app/partials/esp_tabs/esp_tabs_chart.html" %}
+        </div>
+
+    </div>
+</div>

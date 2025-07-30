@@ -1,0 +1,158 @@
+/************************************************************************/
+#esp-detail-container{
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+    flex-wrap:wrap
+}
+
+#esp_tabs{
+    flex-grow: 1;    
+}
+
+/********tab info***************/
+
+.esp-tabs-info{
+
+    display: flex;
+    flex-direction: column;
+    gap:10px 10px;
+}
+.esp-tabs-info__title{
+    flex-grow: 1;
+    border: solid;
+    /***/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+.esp-tabs-info__container{
+    flex-grow: 1;
+    border: solid;
+    /**/
+    display: flex;
+    justify-content: center;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+}
+
+.esp-tabs-info__container-item
+{
+    flex-basis: 30%;
+    text-align: center;
+
+    background-color: #f8f8f8;
+    padding: 18px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+
+    
+    /**/
+    display: flex;
+    flex-direction: column;
+}
+
+
+.esp-tabs-info__container-item .icon {
+    font-size: 1.5rem;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+
+
+/**********tab chart************/
+
+#esp-tab-charts{
+    flex-grow: 1;
+}
+
+#esp-charts-container {
+    display: flex;
+    gap: 10px 10px;
+    flex-direction: column;
+    /* border: solid;
+    border-color: red; */
+
+}
+
+
+/***/
+
+.esp-detail__tabs--buttons{
+    flex-grow: 1;
+    /*box*/
+    border: solid;
+    display: flex;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+}
+
+.esp-detail__tabs--buttons--option{
+    flex-grow: 1;
+    /*box*/
+    display: flex;
+    gap:10px 10px;
+    flex-wrap: wrap;
+    justify-content: end; 
+}
+
+/**/
+
+#esp-charts-wrapper
+{
+    flex-grow: 1;
+    /*box*/
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    min-height: 100px;
+    max-height: 600px;
+}
+
+#esp-charts {
+    border:solid;
+}
+
+/**/
+
+#sensor-toggles{
+    flex-grow: 1;
+    display: flex;
+    gap: 10px 10px;
+    border: solid;
+    
+}
+
+/**/
+
+
+/*********************tab sensor******************************/
+
+#tab-sensors
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+}
+.esp-sensors__checkbox-update
+{
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+#esp-sensors-container
+{
+    display: flex;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+
+}

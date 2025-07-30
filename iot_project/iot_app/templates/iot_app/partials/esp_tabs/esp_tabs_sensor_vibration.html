@@ -1,0 +1,99 @@
+{% load static %}
+{% load tools %}
+
+<div class="sensor-card" data-sensor-type="vibration">
+    <div class="sensor-card-header">
+        <div class="sensor-card-header-left">
+            <div class="sensor-icon">
+                <img src="{% static 'iot_app/icons/vibration_sensor_2.png' %}" 
+                    alt="vibration_sensor_2.png">
+            </div>
+            <h3 class="sensor-name">{{sensor.name}} </h3>
+        </div>
+        <span class="sensor-id">ID:{{sensor.sensor_id}} </span>
+    </div>
+
+    <div class="sensor-current-value">
+        <p class="sensor-current-value-label">Giá trị hiện tại:</p>
+        <p class="sensor-value">
+            {% comment %} {{sensor.latest_readings.0.value }} <span class="sensor-unit">°C</span> {% endcomment %}
+             {{sensor.latest_readings.0.value }} mV
+        </p>
+    </div>
+
+    <div class="sensor-status-info">
+            <span class="status-indicator">
+                {% if sensor.is_active %}
+                    <span class="status-dot" style="background-color:green;"></span>Đang hoạt động 
+                {% else %}
+                    <span class="status-dot" style="background-color:red;"></span>Không hoạt động 
+                {% endif %}
+            </span>
+            <span class="last-updated-text">
+                Cập nhật:  {% to_timezone sensor.latest_readings.0.timestamp_device timezone %}
+            </span>
+        </div>
+
+        <div class="recent-readings-section">
+            <p class="recent-readings-title">5 giá trị gần nhất:</p>
+            <ul class="recent-readings-list">
+                {% for reading in sensor.latest_readings  %}
+                    <li> {% to_timezone reading.timestamp_device timezone %}-{{reading.value}} mV</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="view-details-section">
+            <button class="view-details-button" data-sensor-id="{{ sensor.sensor_id }}">
+                Xem chi tiết
+            </button>
+        </div>
+</div>
+
+
+
+{% comment %} <div class="sensor-card" data-sensor-type="temperature">
+    <div class="sensor-card-header">
+        <div class="sensor-card-header-left">
+            <div class="sensor-icon">
+                <!-- Icon will be injected by JS -->
+            </div>
+            <h3 class="sensor-name">Nhiệt độ Phòng A</h3>
+        </div>
+        <span class="sensor-id">ID: 1</span>
+    </div>
+
+    <div class="sensor-current-value">
+        <p class="sensor-current-value-label">Giá trị hiện tại:</p>
+        <p class="sensor-value">
+            40.0<span class="sensor-unit"></span>
+        </p>
+    </div>
+
+    <div class="sensor-status-info">
+        <span class="status-indicator status-active">
+            <span class="status-dot"></span> Đang hoạt động
+        </span>
+        <span class="last-updated-text">
+            Cập nhật: 12/07/2025 08:00
+        </span>
+    </div>
+
+    <div class="recent-readings-section">
+        <p class="recent-readings-title">5 giá trị gần nhất:</p>
+        <ul class="recent-readings-list">
+            <li>12/07/2025 08:00 - 40.0<span class="sensor-unit-list"></span></li>
+            <li>12/07/2025 07:30 - 70.0<span class="sensor-unit-list"></span></li>
+            <li>12/07/2025 07:06 - 90.0<span class="sensor-unit-list"></span></li>
+            <li>12/07/2025 07:00 - 50.0<span class="sensor-unit-list"></span></li>
+            <li>12/07/2025 06:30 - 30.0<span class="sensor-unit-list"></span></li>
+        </ul>
+    </div>
+
+    <div class="view-details-section">
+        <button onclick="alert('Xem chi tiết cảm biến Nhiệt độ Phòng A (ID: 1)')"
+                class="view-details-button">
+            Xem chi tiết
+        </button>
+    </div>
+</div> {% endcomment %}

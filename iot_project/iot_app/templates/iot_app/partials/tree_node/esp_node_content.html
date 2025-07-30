@@ -1,0 +1,18 @@
+{% load static %}
+<div>
+     <img src="{% static 'iot_app/icons/esp.png' %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="esp-pic">
+
+     {{ esp.esp_id}} - {{ esp.name}} 
+
+     {% if esp.status == 'online' %}
+     <img src="{% static 'iot_app/icons/status_ok.png' %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="Online Status">
+     {% else %}
+     <img src="{% static 'iot_app/icons/status_err.png' %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="Offline Status">
+{% endif %}
+</div>

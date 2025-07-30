@@ -1,0 +1,14 @@
+{% load static %}
+
+<div id="js-sensor-setting-wrapper">
+    
+{% if sensor.sensor_type == "temperature" %}
+    {% include "iot_app/partials/sensor_tabs/sensor_setting_temperature.html" with form=form sensor=sensor error=error %} 
+{% elif sensor.sensor_type == "sound" %}
+    {% include "iot_app/partials/sensor_tabs/sensor_setting_sound.html" with form=form sensor=sensor error=error %} 
+{% elif sensor.sensor_type == "vibration" %}
+    {% include "iot_app/partials/sensor_tabs/sensor_setting_vibration.html" with form=form sensor=sensor error=error %} 
+{% endif %}
+
+
+</div>

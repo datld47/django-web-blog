@@ -1,2 +1,7 @@
 my_site/gcp-sa-key.json
+/my_site
+/myenv1
+/document
+/.vscode
+secrect_key.py
 

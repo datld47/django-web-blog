@@ -1,6 +1,6 @@
 import base64
 import os
-DJANGO_SECRET_KEY = "django-insecure-m=q@#d_!%70t&$h66vkjc&sf3165g34)(2&j$-=(o*23avjt7x"
+DJANGO_SECRET_KEY = 'django-insecure-tazq&-pp20%ad!vfmz)gg4-c(iosne&&g7a$07^jau=ow#6r)#'
 def generate_base64_secret_key(key_string: str) -> str:
     encoded_bytes = base64.b64encode(key_string.encode('utf-8'))
     return encoded_bytes.decode('utf-8')

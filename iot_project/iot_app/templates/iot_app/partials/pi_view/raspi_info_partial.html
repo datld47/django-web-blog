@@ -1,0 +1,18 @@
+
+<div class="detail-content-main-info-container">
+            <p class="detail-content-main-info-item">ID: {{ pi.pi_id }}</p>
+            <p class="detail-content-main-info-item">Tên: {{ pi.name }}</p>
+            <p class="detail-content-main-info-item">Vị trí: {{ pi.location }}</p>
+            <p class="detail-content-main-info-item">Lần cuối thấy: 
+                {% if pi.last_seen %}
+                    {{ pi.last_seen|date:"M d, Y, h:i a" }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <p class="detail-content-main-info-item">Trạng thái: 
+                {# Bạn có thể thêm một span nhỏ để hiển thị trạng thái bằng màu sắc nếu muốn, nhưng tôi sẽ giữ nó đơn giản #}
+                {{ pi.status }}
+            </p>
+            <p class="detail-content-main-info-item">Địa chỉ IP cục bộ: {{ pi.local_ip_address|default:"N/A" }}</p>
+</div>

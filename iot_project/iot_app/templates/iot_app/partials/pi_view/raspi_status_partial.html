@@ -1,0 +1,8 @@
+<div class="detail-content-main-monitor-container">
+    
+    <p class="detail-content-main-monitor-item">Nhiệt độ CPU: {{ pi.cpu_temperature_celsius|floatformat:1 }}°C</p>
+    
+    <p class="detail-content-main-monitor-item"> Sử dụng RAM: {{ pi.ram_usage_gb|floatformat:1 }} GB</p>
+
+    <p class="detail-content-main-monitor-item">Dung lượng đĩa: {{ pi.disk_space_gb|floatformat:1 }} GB</p>
+</div>

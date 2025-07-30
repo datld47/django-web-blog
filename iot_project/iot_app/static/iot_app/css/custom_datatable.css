@@ -1,0 +1,51 @@
+.btn-copy {
+    background-color: #6c757d !important;  /* Xám */
+    color: white !important;
+}
+
+.btn-csv {
+    background-color: #17a2b8 !important;  /* Xanh cyan */
+    color: white !important;
+}
+
+.btn-excel {
+    background-color: #28a745 !important;  /* Xanh lá */
+    color: white !important;
+}
+
+.btn-pdf {
+    background-color: #dc3545 !important;  /* Đỏ */
+    color: white !important;
+}
+
+.btn-print {
+    background-color: #343a40 !important;  /* Đen */
+    color: white !important;
+}
+
+/* Tùy chỉnh chung cho nút */
+.dt-button {
+    border: none;
+    padding: 8px 14px;
+    margin: 2px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dt-button i {
+    margin-right: 6px;
+}
+
+
+
+.row-warning {
+        background-color: #ffe0e0 !important; /* đỏ nhạt */
+        font-weight: bold;
+        color: #b71c1c;
+    }
+
+
+.dataTables_filter {
+    margin-bottom: 16px !important ; /* Tạo khoảng cách phía dưới */
+}

@@ -1,0 +1,10 @@
+{% load static %}
+{% if sensor.sensor_type == "temperature" %}
+    <img src="{% static 'iot_app/icons/temperature_sensor_2.png' %}" alt="temperature_sensor_2.png">    
+{% elif sensor.sensor_type == "sound"  %}
+    <img src="{% static 'iot_app/icons/sound_sensor_2.png' %}" alt="sound_sensor_2.png">
+{% elif sensor.sensor_type == "vibration" %}
+    <img src="{% static 'iot_app/icons/vibration_sensor_2.png' %}" alt="vibration_sensor_2.png">
+{% endif %} 
+
+

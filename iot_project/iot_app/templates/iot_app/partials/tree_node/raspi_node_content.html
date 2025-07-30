@@ -1,0 +1,20 @@
+{% load static %}
+<div>
+     
+     <img src="{% static 'iot_app/icons/pi4.png' %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="pi4-pic">
+
+     {{ pi.pi_id}} - {{ pi.name}} 
+
+     {% if pi.status == 'online' %}
+     <img src="{% static 'iot_app/icons/cloud_ok.png' %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="Online Status">
+
+     {% else %}
+     <img src="{% static 'iot_app/icons/cloud_err.png' %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="Offline Status">
+     {% endif %}
+</div>

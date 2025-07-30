@@ -1,0 +1,102 @@
+/* Container chung cho form để căn giữa và tạo khoảng cách */
+.login-form {
+    max-width: 400px; /* Giới hạn độ rộng tối đa của form */
+    margin: 50px auto; /* Căn giữa form theo chiều ngang và tạo khoảng cách trên dưới */
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    font-family: Arial, sans-serif; /* Chọn font chữ phù hợp */
+}
+
+/* Tiêu đề form */
+.login-form h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+/* Styling cho thông báo lỗi */
+.login-form div p[style="color:red;"] {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+/* Các thẻ <p> do {{ login_form.as_p }} tạo ra, mỗi thẻ chứa một label và input */
+.login-form p {
+    display: flex;         /* Biến mỗi hàng thành một flex container */
+    align-items: center;   /* Căn giữa label và input theo chiều dọc */
+    margin-bottom: 15px;   /* Khoảng cách giữa các cặp label/input */
+}
+
+/* Các nhãn (labels) */
+.login-form label {
+    flex-basis: 120px;     /* Đặt độ rộng cố định cho nhãn. Điều chỉnh giá trị này nếu nhãn của bạn dài hơn/ngắn hơn */
+    text-align: right;     /* Căn phải nhãn để nó sát với input */
+    margin-right: 15px;    /* Khoảng cách giữa nhãn và input */
+    color: #555;
+    font-size: 1em;
+}
+
+/* Các trường input (textbox và password) */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    flex-grow: 1;          /* Cho phép input lấp đầy phần không gian còn lại */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Đảm bảo padding và border được tính vào tổng width */
+}
+
+/* Styling cho nút "Đăng nhập" */
+.login-form button {
+    display: block;        /* Đảm bảo nút chiếm một dòng riêng */
+    width: 100%;           /* Chiếm toàn bộ chiều rộng của form */
+    padding: 12px;
+    margin-top: 25px;      /* Khoảng cách từ trường cuối cùng */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Hiệu ứng khi di chuột qua */
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Styling cho liên kết "Đăng ký" */
+.login-form a {
+    display: block;        /* Đảm bảo liên kết chiếm một dòng riêng */
+    text-align: center;
+    margin-top: 15px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: color 0.3s ease;
+}
+
+.login-form a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* CSS cho lỗi validation của Django Form (nếu có) */
+.errorlist {
+    color: red;
+    list-style-type: none; /* Bỏ dấu chấm đầu dòng */
+    padding: 0;
+    margin: -10px 0 10px 0; /* Điều chỉnh khoảng cách */
+    font-size: 0.85em;
+    text-align: center;
+}
+
+.errorlist li {
+    margin-bottom: 5px;
+}

@@ -1,0 +1,46 @@
+<form id="js-sensor-setting-form" method="post"  action="{% url 'sensor_temperature_config_page' %}">
+  {% csrf_token %}
+  
+    {% if error == False  %}
+      <div class="message" style="color: green; font-weight: bold;">
+        Lưu thành công
+      </div>
+    {% elif  error == True %}
+      <div class="message" style="color: red; font-weight: bold;">
+        Lưu Lỗi
+      </div>
+    {% endif %}
+
+  <div>
+    <h3>Cấu hình chung</h3>
+    <hr>
+    <div>
+      {{ form.sensor_name.label_tag }}
+      {{ form.sensor_name }}
+    </div>
+    
+    <div>
+      {{ form.read_interval_seconds.label_tag }}
+      {{ form.read_interval_seconds }}
+    </div>
+</div>
+
+<div>
+  <h3>Tham số để gửi sự kiện cạnh báo</h3>
+  <div>
+    {{ form.threshold_low.label_tag }}
+    {{ form.threshold_low }}
+  </div>
+
+  <div>
+    {{ form.threshold_high.label_tag }}
+    {{ form.threshold_high }}
+  </div>
+</div>
+  
+  <input type="hidden" name="sensor_id" value="{{ sensor.sensor_id }}">
+  <br>
+  {% comment %} <input type="hidden" name="sensor_id" value="{{ sensor.sensor_id }}"> {% endcomment %}
+  <button type="submit">Lưu cài đặt</button>
+
+</form>

@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% load static %} 
+
+{% block title %} Trang chủ {%endblock %} 
+
+{% block css_files %} 
+
+<link rel="stylesheet" href="{% static "iot_app/css/index.css" %}"/> 
+<link rel="stylesheet" href="{% static "iot_app/css/sensor_card.css" %}"/> 
+<link rel="stylesheet" href="{% static "iot_app/css/sensor_detail.css" %}"/> 
+<link rel="stylesheet" href="{% static "iot_app/css/raspi_detail.css" %}"/> 
+<link rel="stylesheet" href="{% static "iot_app/css/esp_detail.css" %}"/> 
+<link rel="stylesheet" href="{% static "iot_app/css/custom_datatable.css" %}"/> 
+{% endblock %} 
+
+
+{% block content %}
+
+<div id="main-container">
+  <div id="main-tree-container">
+    <h3 class="main-tree__title">Danh sách thiết bị</h3>
+    <div id="main-tree">placeholder:Cây hiển thị</div>
+    {{ tree_nodes_json|json_script:"tree-data" }}
+  </div>
+  <div id="detail-content">
+    <div>placeholder:Chi tiết thiết bị</div>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+  <script src="{% static 'iot_app/js/global.js' %}"></script>
+  {% comment %} <script src="{% static 'iot_app/js/convert_time.js' %}"></script> {% endcomment %}
+  <script src="{% static 'iot_app/js/chart_rendering.js' %}"></script>
+  {% comment %} <script src="{% static 'iot_app/js/detail_event_listeners.js' %}"></script> {% endcomment %}
+  <script src="{% static 'iot_app/js/index.js' %}"></script>
+  
+{% endblock %}

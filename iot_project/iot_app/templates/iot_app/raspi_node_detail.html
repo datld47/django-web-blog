@@ -1,0 +1,70 @@
+
+{% load static %}
+
+<div class="detail-content-main">
+
+    <div class="detail-content-main-info"> 
+        
+        <div class="detail-content-main-info-title">
+            <h3>Thông tin Raspberry Pi: {{ pi.name }} ({{ pi.pi_id }})</h3>
+        </div>
+
+        <div id="raspi-info-container">
+            {% include 'iot_app/partials/pi_view/raspi_info_partial.html' %}
+        </div>
+       
+    </div>
+    
+    <div clsss="detail-content-main-monitor">
+        <div class= "detail-content-main-monitor-title">
+            <h3>Thông tin hiệu suất</h3>
+        </div>
+        
+        <div id="raspi-status-container">
+             {% include "iot_app/partials/pi_view/raspi_status_partial.html" %}
+        </div>
+    </div>
+
+    <div class="detail-content-main-chart">
+        <div class="detail-content-main-chart-title" >
+            <h3>Giản đồ hiệu suất</h3>
+        </div>
+        
+        <div class="detail-content-main-chart-container">
+            <div class="chart-container-cpu">
+                <canvas id="cpuUsageChart">placeholder:chart</canvas>
+                <p id="cpuChartLoadingMessage">placeholder: Đang tải biểu đồ CPU Usage...</p> 
+           
+            </div>
+            <div class="chart-container-ram">
+                <canvas id="ramUsageChart">placeholder:chart</canvas>
+                <p id="ramChartLoadingMessage">placehoder:Đang tải biểu đồ Ram Usage...</p>
+            </div>
+            <div class="chart-container-temperature">
+                <canvas id="tmperatureChart">placeholder:chart</canvas>
+                <p id="temperatureChartLoadingMessage">placehoder:Đang tải biểu đồ Ram Usage...</p>
+            </div>
+        </div>
+        
+    </div>
+
+     <div class="detail-content-main-control">
+
+        <div class="detail-content-main-control-title">
+            <h3>Điều khiển thiết bị</h3>
+        </div>
+
+        <div id="button-group" class="detail-content-main-control-btn-container" >
+            <button id="rebootPiBtn" class="action-button primary-button">Khởi động lại Pi</button>
+            <button id="shutdownPiBtn" class="action-button danger-button">Tắt nguồn Pi</button>
+            <button id="updateSoftwareBtn" class="action-button secondary-button">Cập nhật phần mềm</button>
+            <button id="pingPiBtn" class="action-button tertiary-button">Kiểm tra kết nối (Ping)</button>
+            <button id="simpleSshBtn" class="action-button primary-button">SSH Đơn giản</button>
+        </div>
+        <!-- Khu vực hiển thị thông báo phản hồi từ server -->
+        <div id="controlMessage" class="control-message">placeholder:thông báo phản hồi</div>
+    </div>
+</div>
+
+
+

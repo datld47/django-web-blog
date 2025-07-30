@@ -1,0 +1,73 @@
+{% load static %}
+{% load tools %}
+
+<div class="sensor-detail">
+    <div class="sensor-detail__header">
+        
+        <div class="sensor-detail__header--logo">
+              {% include "iot_app/partials/sensor_tabs/sensor_logo.html" with sensor=sensor %} 
+        </div>
+
+        <div class="sensor-detail__header--title">{{sensor.name}}</div>
+        <div class="sensor-detail__header--id"><span style="font-weight:bold">Id</span>={{sensor.sensor_id}}</div>
+        <div class="sensor-detail__header--status">  
+            {% include "iot_app/partials/sensor_tabs/sensor_status.html" with sensor=sensor %} 
+        </div>
+
+    </div>
+
+    <div class="sensor-detail__info">
+        <div class="sensor-detail__info--value">
+            <p style="font-size:20px;">Giá trị hiện tại</p>
+            <p style="font-weight:bold; font-size:30px;"> <span id="sensor-detail-info-value">{{latest_reading.value}}</span> {{sensor.get_unit}}</p>
+          
+        </div>
+        <div class="sensor-detail__info--sensor-type">
+            <p style="font-size:20px;">Loại cảm biến</p>
+            <p style="font-weight:bold; font-size:30px;">{{sensor.get_type}}</p>
+        </div>
+        <div class="sensor-detail__info--lastest-time">
+            <p style="font-size:20px;">Cập nhập cuối</p>
+            <p style="font-weight:bold; font-size:30px;"> <span id="sensor-detail-info-lastest-time"> {% to_timezone latest_reading.timestamp_device timezone %} </span> </p>
+        </div>
+        <div class="sensor-detail__info--esp-name">
+            <p style="font-size:20px;">Thiết bị ESP</p>
+            <p style="font-weight:bold; font-size:30px;">{{sensor.esp_device.name}}</p>
+        </div>
+    </div>
+
+    <div class="sensor-detail__tabs" id="sensor-detail-tabs">
+        
+        <ul>
+            <li><a href="#sensor-detail-tabs-chart">Biểu đồ</a></li>
+            <li><a href="#sensor-detail-tabs-data">Dữ liệu</a></li>
+            <li><a href="#sensor-detail-tabs-setting-control">Cài đặt - Điều khiển</a></li>
+            <li><a href="#sensor-detail-tabs-statistics">Thống kê</a></li>
+        </ul>
+        
+          <!-- Nội dung của từng Tab -->
+        <div id="sensor-detail-tabs-chart">
+            {% include "iot_app/partials/sensor_tabs/sensor_tabs_chart.html"%} 
+        </div>
+
+         <div id="sensor-detail-tabs-data">
+            {% include "iot_app/partials/sensor_tabs/sensor_tabs_data.html" with sensor=sensor %} 
+        </div>
+
+        <div id="sensor-detail-tabs-setting-control">
+            
+            {% if form %}
+                {% include "iot_app/partials/sensor_tabs/sensor_setting.html" with form=form sensor=sensor error=None %} 
+            {% endif %}
+                    
+        </div>
+
+        <div id="sensor-detail-tabs-statistics">
+             <p>Thống kê</p>
+        </div>
+        
+    </div>
+</div>
+
+
+

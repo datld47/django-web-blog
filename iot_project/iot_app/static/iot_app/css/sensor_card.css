@@ -1,0 +1,176 @@
+.sensor-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        padding: 24px;
+        width: 320px; /* Fixed width for single card demo */
+        max-width: 90%; /* Responsive on smaller screens */
+    }
+
+.sensor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Header */
+.sensor-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.sensor-card-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.sensor-icon {
+    font-size: 1.875rem;
+    color: #2563eb;
+    margin-right: 12px;
+}
+
+.sensor-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.sensor-id {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* Current Value Section */
+.sensor-current-value {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.sensor-current-value-label {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 8px;
+}
+
+.sensor-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: inline-flex;
+  align-items: baseline; /* ← CỰC KỲ QUAN TRỌNG */
+}
+
+.sensor-unit {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: 4px;
+  /* KHÔNG dùng sup hoặc vertical-align ở đây */
+}
+
+/* Status and Last Updated Section */
+.sensor-status-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #374151;
+    margin-bottom: 16px;
+    flex-direction: column;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-active .status-dot {
+    background-color: #10b981;
+}
+.status-inactive .status-dot {
+    background-color: #ef4444;
+}
+
+.last-updated-text {
+    color: #6b7280;
+}
+
+/* Recent Readings List */
+.recent-readings-section {
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+}
+
+.recent-readings-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.recent-readings-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+.recent-readings-list li {
+    padding: 4px 0;
+    border-bottom: 1px dotted #e5e7eb;
+}
+.recent-readings-list li:last-child {
+    border-bottom: none;
+}
+.no-data-message {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* View Details Button */
+.view-details-section {
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.view-details-button {
+    width: 100%;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.view-details-button:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.view-details-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}

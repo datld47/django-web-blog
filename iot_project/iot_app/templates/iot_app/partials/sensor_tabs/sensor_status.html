@@ -1,0 +1,9 @@
+ {% if sensor.is_active %}
+        <span id="js-sensor-status-dot"  class="status-dot" style="background-color:green;"></span>
+        <span id="js-sensor-status-text">Đang hoạt động</span> 
+{% else %}
+        <span id="js-sensor-status-dot"  class="status-dot" style="background-color:red;"></span>
+        <span id="js-sensor-status-text">Không hoạt động</span> 
+{% endif %}
+
+

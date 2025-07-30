@@ -1,0 +1,162 @@
+.sensor-detail{
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+
+}
+
+/***********************/
+.sensor-detail__header{
+
+    flex-grow: 1;
+    /*---box---*/
+    border: solid;
+    display: flex;
+    gap: 30px 30px;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+}
+
+.sensor-detail__header--title{
+    font-weight: bold;
+    font-size: large;    
+}
+.sensor-detail__header--status{
+    flex-grow: 1;
+    text-align: right;
+    margin-right: 20px;
+}
+
+/*************************/
+.sensor-detail__info{
+
+    flex-grow: 1;
+    /*---box---*/
+    display: flex;
+    gap: 30px 30px;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sensor-detail__info--value{
+    flex-basis: 20%;
+    border: solid;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.61);
+    color: white;
+}
+
+.sensor-detail__info--sensor-type{
+    flex-basis: 20%;
+    border: solid;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.61);
+    color: white;
+}
+
+.sensor-detail__info--lastest-time{
+    flex-basis: 20%;
+    border: solid;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.61);
+    color: white;
+    
+}
+
+.sensor-detail__info--esp-name{
+    flex-basis: 20%;
+    border: solid;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.61);
+    color: white;
+}
+
+
+/*************************/
+
+.sensor-detail__tabs{
+
+    flex-grow: 1;
+    /*box**/
+    border: solid;
+}
+
+
+/***/
+#sensor-detail-tabs-chart{
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+    border: solid;
+}
+
+.sensor-detail__tabs--buttons{
+    flex-grow: 1;
+    /*box*/
+    border: solid;
+    display: flex;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+}
+
+.sensor-detail__tabs--buttons--option{
+    flex-grow: 1;
+    /*box*/
+    display: flex;
+    gap:10px 10px;
+    flex-wrap: wrap;
+    justify-content: end;
+}
+
+.sensor-detail__tabs--chart{
+    flex-grow: 1;
+    /*box*/
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    min-height: 100px;
+    max-height: 600px;
+}
+
+
+#js-sensor-detail-tabs-chart{
+    /* flex-grow: 1; */
+    border: solid;
+}
+/***/
+.sensor-detail__back-button{
+
+    flex-grow: 1;
+    /*box**/
+    border: solid;
+}
+
+/*****/
+
+#sensor-detail-tabs-data {
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    justify-content: center;
+    align-content: center;
+    border: solid;
+}
+
+.sensor-data__form-search{
+
+    border:solid;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 20px;
+}
+
+.display{
+    border: solid;
+}

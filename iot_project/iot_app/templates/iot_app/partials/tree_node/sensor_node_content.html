@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="jstree__sensor-node"
+     data-sensor-id="{{ sensor.id }}"
+     data-sensor-type="{{ sensor.sensor_type }}"
+     data-latest-value="{{ sensor.latest_value }}"
+     data-sensor-name="{{ sensor.name }}"
+     data-latest-date="{{ sensor.latest_date|date:'c'}}"
+     data-sensor-status="{{sensor.is_active }}"
+     >
+
+     <img src="{% if sensor.sensor_type == 'temperature' %}{% static 'iot_app/icons/temperature_sensor.png' %}
+               {% elif sensor.sensor_type == 'sound' %}{% static 'iot_app/icons/sound_sensor.png' %}
+               {% elif sensor.sensor_type == 'vibration' %}{% static 'iot_app/icons/vibration_sensor.png' %}
+               {% else %}{% static 'iot_app/icons/default_sensor.png' %}
+               {% endif %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="{{ sensor.sensor_type }}">
+
+     {{ sensor.sensor_id }} - {{ sensor.name }} - <span style="font-weight:bold;"> {{sensor.latest_value}} </span>
+
+     <img src="{% if sensor.is_active == True %}{% static 'iot_app/icons/status_ok.png' %}
+               {% else %}{% static 'iot_app/icons/status_err.png' %}
+               {% endif %}"
+          style="width:20px; height:20px; vertical-align:middle; margin-right:5px;"
+          alt="sensor-statatus">
+</div>

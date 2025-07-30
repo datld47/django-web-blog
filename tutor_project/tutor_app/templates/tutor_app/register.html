@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Trang Đăng ký tài khoản
+{% endblock  %}
+
+{% block css_files %}
+
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div>
+            <p>Đăng ký tài khoản</p>
+            {% comment %} <form method='POST' action='{% url "login-page" %}'>
+                {% csrf_token %}
+                {{login_form}}
+                <button>Đăng nhập</button>
+                <a href='{% url "register-page" %}'>Đăng ký</a>
+            </form> {% endcomment %}
+        </div>
+    </section>
+{% endblock  %} 

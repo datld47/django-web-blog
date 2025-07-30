@@ -1,0 +1,7 @@
+ {% if esp.status == "online" %}
+        <span id="js-esp-status-dot"  class="status-dot" style="background-color:green;"></span>
+        <span id="js-esp-status-text">Đang hoạt động</span> 
+{% elif esp.status == "offline" %}
+        <span id="js-esp-status-dot"  class="status-dot" style="background-color:red;"></span>
+        <span id="js-esp-status-text">Không hoạt động</span> 
+{% endif %}

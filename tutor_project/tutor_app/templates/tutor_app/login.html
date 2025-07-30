@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Trang đăng nhập
+{% endblock  %}
+
+{% block css_files %}
+  {% comment %} <link rel="stylesheet" href="{% static "tutor_app/login.css" %}"/> {% endcomment %}
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div>
+            <h3>Đăng nhập hệ thống</h3>
+            <form method='POST' action='{% url "login-page" %}'>
+                {% csrf_token %}
+                {% if error %}
+                    <div>
+                    <p style="color:red;">Đăng nhập lỗi</p>
+                    {% for message in message_error %}
+                        <p style="color:red;">{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {{login_form}}
+                <button>Đăng nhập</button>
+                <a href='{% url "register-page" %}'>Đăng ký</a>
+            </form>
+        </div>
+    </section>
+{% endblock  %} 

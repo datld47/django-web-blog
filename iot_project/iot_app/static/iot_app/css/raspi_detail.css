@@ -1,0 +1,148 @@
+.detail-content-main{
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+}
+
+/************************Hiển thị thôn tin chung*****************************/
+
+.detail-content-main-info{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+}
+
+.detail-content-main-info-title
+{
+    flex-grow: 1;
+    text-align: center;
+    border: solid;
+    background-color: black;
+    color: white;
+}
+
+.detail-content-main-info-container
+{
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 5px;
+    border: solid;
+}
+
+
+.detail-content-main-info-item
+{
+    flex-grow: 1;
+    flex-basis:25%;
+    margin:5px;
+}
+
+/************************Hiển thị thông tin hiệu suất********************************/
+.detail-content-main-monitor
+{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+}
+
+.detail-content-main-monitor-title{
+    flex-grow: 1;
+    text-align: center;
+    border: solid;
+    background-color: black;
+    color: white;
+}
+
+.detail-content-main-monitor-container{
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 10px;
+    justify-content: center;
+}
+
+.detail-content-main-monitor-item{
+    flex-grow: 1;
+    flex-basis: 30%;
+}
+
+/********************************Hiển thị đồ thị hiệu suất*******************************/
+
+.detail-content-main-chart
+{
+
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+}
+
+.detail-content-main-chart-title{
+    flex-grow: 1;
+    text-align: center;
+    border: solid;
+    background-color: black;
+    color: white;
+}
+
+
+
+.detail-content-main-chart-container{ 
+    flex-grow: 1;
+    display: flex;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+    border: solid;
+    justify-content: center;
+}
+
+.chart-container-cpu
+.chart-container-ram
+.chart-container-temperature
+{
+    flex-basis: 30%;
+    flex-grow: 1;
+}
+
+
+#cpuUsageChart
+#ramUsageChart
+#tmperatureChart
+{ 
+    height: 400px !important;
+    display: block;
+}
+/********************************Hiển thị nút lệnh*********************************************/
+.detail-content-main-control{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px 10px;
+}
+
+.detail-content-main-control-title{
+    flex-grow: 1;
+    text-align: center;
+    border: solid;
+    background-color: black;
+    color: white;
+}
+
+.detail-content-main-control-btn-container{
+
+    flex-grow: 1;
+    display: flex;
+    gap: 10px 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: baseline;
+}
+
+.detail-content-main-control-btn-container button{
+    flex-grow: 1;
+}

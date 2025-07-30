@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/themes/default/style.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    
+    <link rel="stylesheet" href="{% static "app.css" %}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+    <title>{% block title %}{% endblock  %}</title>
+
+    {% block css_files %}{% endblock  %}
+</head>
+
+<body>
+
+    <div id="main-header">
+        
+        <h1>Hệ thống quản lý và điều khiển thiết bị Iot</h1>
+    
+    </div>
+
+    <div id ="main-navigation">
+        <ul class="main-navigation__nav">
+            <li class="main-navigation__nav-item"><a href="{% url "starting-page" %}">Home</a></li>
+        </ul>
+    </div>
+
+    <div id="main-content">
+        
+        {% block content  %}
+        
+        {% endblock  %}
+    </div>
+
+    <div id="main-footer">
+        <div class="footer-content">
+            <p>© 2025 Lâm Dư Đạt. All rights reserved.</p>
+            <p>Liên hệ: <a href="mailto:datld@donga.edu.vn">datld@donga.edu.vn</a></p>
+            <p>Trường Đại học Đông Á - Đăk lăk</p>
+        </div>
+    </div>
+    
+    {% block script %}
+    
+    {% endblock %}
+
+</body>
+</html>

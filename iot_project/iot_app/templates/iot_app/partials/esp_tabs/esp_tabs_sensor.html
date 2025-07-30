@@ -1,0 +1,16 @@
+ {% load static %}
+
+{% for sensor in sensors  %}
+
+    {% if sensor.sensor_type == "temperature" %}
+        {% include "iot_app/partials/esp_tabs/esp_tabs_sensor_temperature.html" with sensor=sensor timezone=timezone %}
+    {% elif sensor.sensor_type == "sound"  %}
+        {% include "iot_app/partials/esp_tabs/esp_tabs_sensor_sound.html" with sensor=sensor timezone=timezone %}
+    {% elif sensor.sensor_type == "vibration"  %}
+        {% include "iot_app/partials/esp_tabs/esp_tabs_sensor_vibration.html" with sensor=sensor timezone=timezone %}
+    {% endif %} 
+
+{% endfor %}
+
+
+

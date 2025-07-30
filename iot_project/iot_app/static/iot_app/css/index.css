@@ -1,0 +1,44 @@
+
+.content-header{
+text-align: center;
+}
+
+#main-container{
+    flex-grow: 1;
+    margin: 5px 5px 5px 5px;
+    border: solid;
+    border-color: blue;
+  
+    display: flex;
+    gap:20px 20px;
+}
+
+#main-tree-container{
+
+ margin: 5px 5px 5px 5px;
+ flex-basis: 300px;
+ border: solid;
+
+}
+
+.main-tree__title{
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+#detail-content{
+
+ margin: 5px 5px 5px 5px;
+ flex-grow: 1;
+ flex-shrink: 1; 
+
+}
+
+/********************Nội dung khi nhấn node pi******************************/
+/***************************************************************************/
+
+
+
+
+

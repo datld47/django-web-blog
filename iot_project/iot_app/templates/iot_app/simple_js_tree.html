@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple jsTree Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/themes/default/style.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js"></script>
+
+    <style>
+        #jstree_demo {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>My Simple jsTree</h1>
+    <div id="jstree_demo"></div>
+     {{ tree_nodes_json|json_script:"tree-data" }}
+    
+    <script>
+        $(function () {
+            // Khởi tạo jsTree
+            var treeData = JSON.parse(document.getElementById('tree-data').textContent);
+            $('#jstree_demo').jstree({
+                'core': {
+                    'data': treeData,
+                    "check_callback": true // Cho phép các thao tác như kéo thả, sửa
+                },
+                "plugins": ["dnd", "state", "types", "contextmenu", "wholerow"] // Kích hoạt các plugin cần thiết
+            });
+
+            // Lắng nghe sự kiện khi một node được chọn
+            $('#jstree_demo').on('select_node.jstree', function (e, data) {
+                console.log('Selected node: ' + data.instance.get_node(data.selected[0]).text);
+                alert('Bạn đã chọn: ' + data.instance.get_node(data.selected[0]).text);
+            }); 
+        });
+    </script>
+</body>
+</html>

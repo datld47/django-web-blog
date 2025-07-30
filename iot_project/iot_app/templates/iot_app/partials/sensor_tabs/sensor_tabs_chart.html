@@ -1,0 +1,28 @@
+
+
+<div class="sensor-detail__tabs--checkbox-update">
+    <input type="checkbox" id="sensor-detail-tabs-checkbox-update" />Tự cập nhật mỗi 5 giây
+</div>
+
+<div class="sensor-detail__tabs--buttons">
+    <button class="sensor-detail__tabs--buttons--24h" id="sensor-detail-tabs-buttons-24h">24 giờ</button>
+    <button class="sensor-detail__tabs--buttons--7day" id="sensor-detail-tabs-buttons-7day">7 ngày</button>
+    <button class="sensor-detail__tabs--buttons--30day" id="sensor-detail-tabs-buttons-30day">30 ngày</button>
+    
+    <div class="sensor-detail__tabs--buttons--option">
+        <span class="sensor-detail__tabs--buttons--option--title">Tùy chỉnh</span>
+        <input type="datetime-local" id="sensor-detail-tabs-buttons-option-start-date">
+        <input type="datetime-local" id="sensor-detail-tabs-buttons-option-end-date">
+        <button id="sensor-detail-tabs-buttons-option">Áp dụng</button>
+    </div>
+</div>
+
+<div class="sensor-detail__tabs--chart"> 
+    <canvas id="js-sensor-detail-tabs-chart"> Đồ thị được vẽ ở đây </canvas>
+</div>
+
+{% comment %} <div id="sensor-toggles">
+    <label><input type="checkbox" class="sensor-toggle" value="temperature" checked> Nhiệt độ</label>
+    <label><input type="checkbox" class="sensor-toggle" value="sound" checked> Âm thanh</label>
+    <label><input type="checkbox" class="sensor-toggle" value="vibration" checked> Rung</label>
+</div> {% endcomment %}
