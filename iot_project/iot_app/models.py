@@ -6,7 +6,6 @@ from django.utils import timezone
 from zoneinfo import available_timezones
 
 # Create your models here.
-
 class PiMetricHistory(models.Model):
     """
     Lưu trữ dữ liệu lịch sử cho các metrics khác nhau của RaspberryPi (CPU, RAM, Nhiệt độ, Disk).
@@ -18,18 +17,20 @@ class PiMetricHistory(models.Model):
         ('TEMP', 'CPU Temperature (C)'),
         # Bạn có thể thêm các loại metric khác nếu cần
     ]
-
+    
     raspberry_pi = models.ForeignKey(
         'RaspberryPi',
         on_delete=models.CASCADE,
         related_name='metric_history', # Đổi related_name để phản ánh tính tổng quát
         help_text="Raspberry Pi mà bản ghi metric này thuộc về"
     )
+    
     metric_type = models.CharField(
         max_length=10,
         choices=METRIC_TYPE_CHOICES,
         help_text="Loại metric (CPU, RAM, TEMP, DISK)"
     )
+    
     timestamp = models.DateTimeField(
         auto_now_add=True, # Tự động đặt thời gian khi tạo bản ghi
         help_text="Thời gian ghi nhận metric"
@@ -70,10 +71,9 @@ class RaspberryPi(models.Model):
       # Địa chỉ IP nội bộ của Pi (có thể thay đổi nhưng hữu ích cho debug)
     local_ip_address = models.GenericIPAddressField(blank=True, null=True)
     
-    
     cpu_usage = models.FloatField(default=0.0, help_text="Mức sử dụng CPU hiện tại (%)")
     ram_usage_gb = models.FloatField(default=0.0, help_text="Mức sử dụng RAM hiện tại (GB)") # Hoặc ram_usage_percent
-    disk_space_gb = models.FloatField(default=0.0, help_text="Dung lượng ổ đĩa còn trống (GB)") # Hoặc disk_space_percent
+    disk_space_gb = models.FloatField(default=0.0, help_text="Dung lượng ổ đĩa còn trống (GB)") # Hoặc disk_space_pecent
     cpu_temperature_celsius = models.FloatField(default=0.0, help_text="Nhiệt độ CPU hiện tại (°C)")
     
     def __str__(self):
@@ -149,12 +149,13 @@ class Sensor(models.Model):
         ('humidity', 'SENSOR HUMIDITY'),
     ]
     
+    
     esp_device = models.ForeignKey(EspDevice, on_delete=models.CASCADE, 
                                     related_name='sensors', 
                                     help_text="ESP32 mà cảm biến này kết nối tới")
     
     # ID duy nhất của cảm biến trên ESP32 đó (ví dụ: địa chỉ I2C, số chân GPIO)
-    sensor_id = models.CharField(max_length=100, 
+    sensor_id = models.CharField(max_length=100, unique=True, primary_key=True,
                                  help_text="ID duy nhất của cảm biến (ví dụ: địa chỉ I2C, số chân GPIO trên ESP32)")
     
     name = models.CharField(max_length=100, help_text="Tên thân thiện của cảm biến (ví dụ: Cảm biến Nhiệt độ Phòng A)")
@@ -221,7 +222,8 @@ class SensorReading(models.Model):
     """
     Lưu trữ các giá trị đọc được từ một cảm biến cụ thể.
     """
-    sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name='readings',
+    sensor = models.ForeignKey(Sensor, 
+                               on_delete=models.CASCADE, related_name='readings',
                                help_text="Cảm biến tạo ra bản đọc này")
     
     # Thêm khóa ngoại đến EspDevice và RaspberryPi để dễ truy vấn hơn
@@ -366,6 +368,23 @@ class SensorVibrationConfig(models.Model):
     def __str__(self):
         return f"Cấu hình rung động cho {self.sensor.name}"
 
+class ExternalServiceConfig(models.Model):
+    SERVICE_TYPE_CHOICES = [
+        ('MQTT', 'MQTT Broker'),
+        ('SQL', 'SQL Server'),
+        ('HTTP_API', 'HTTP API'),
+    ]
+    server_name = models.CharField(max_length=200,unique=True, primary_key=True)
+    service_type = models.CharField(max_length=20, choices=SERVICE_TYPE_CHOICES)
+    host = models.CharField(max_length=200)
+    port = models.PositiveIntegerField(default=1883)
+    username = models.CharField(max_length=100, blank=True, null=True)
+    password = models.CharField(max_length=100, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    extra_config = models.JSONField(default=dict, blank=True)
+    def __str__(self):
+        return f"{self.service_type}: {self.server_name} ({self.host}:{self.port})"
+
 
 
 # class Alarm(models.Model):
@@ -402,4 +421,4 @@ class SensorVibrationConfig(models.Model):
 #         return f"[{'ACTIVE' if self.is_active else 'RESOLVED'}] {self.alarm_type} - {self.message}"
 
 #     class Meta:
-#         ordering = ['-triggered_at']
+#         ordering = ['-triggered_at']0.

@@ -1,7 +1,7 @@
 from django.contrib import admin
 import nested_admin
 import nested_admin.nested 
-from .models import RaspberryPi,EspDevice,Sensor,SensorReading,PiMetricHistory,SensorTemperatureConfig,SensorSoundConfig,SensorVibrationConfig
+from .models import RaspberryPi,EspDevice,Sensor,SensorReading,PiMetricHistory,SensorTemperatureConfig,SensorSoundConfig,SensorVibrationConfig,ExternalServiceConfig
 
 # class ImageExerciseInline(nested_admin.nested.NestedTabularInline):
 #     model=Image_Exercise
@@ -38,3 +38,4 @@ admin.site.register(PiMetricHistory)
 admin.site.register(SensorTemperatureConfig)
 admin.site.register(SensorSoundConfig)
 admin.site.register(SensorVibrationConfig)
+admin.site.register(ExternalServiceConfig)

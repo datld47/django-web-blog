@@ -87,7 +87,7 @@ def get_tree_data_for_jstree():
                 )
                 node_text = f"Sensor: {sensor.name} ({sensor.sensor_id}) - Type: {sensor.sensor_type}"
                 jstree_nodes.append({
-                    "id": f"{sensor.id}", # Dùng sensor.id (pk) thay vì sensor_id (CharField) để đảm bảo duy nhất
+                    "id": f"{sensor.sensor_id}", # Dùng sensor.id (pk) thay vì sensor_id (CharField) để đảm bảo duy nhất
                     "parent": f"{esp.esp_id}", # Parent là ESP
                     "text": rendered_html_text,
                     "type": "sensor"
@@ -860,7 +860,81 @@ class SensorVibrationConfigView(View):
             
         return JsonResponse({"html": rendered_form})
     
-#-------------------------------------------api dieu khien--------------------------------------#
+#-------------------------------------------djano-local (raspi) sync data--------------------------------------#
+@method_decorator(csrf_exempt, name='dispatch')
+class DjangoLocalSyncDataView(View):
+    def post(self,request):
+        try:
+            print('xu ly du lieu sync')
+            data = json.loads(request.body)
+            # # Xử lý từng bản ghi
+            # for item in data:
+            #     # Ví dụ: bạn có thể lấy thông tin và lưu vào DB tại đây
+            #     # Tùy ứng dụng, bạn có thể tạo object từ model
+            #     sensor_id = item['sensor_id']
+            #     esp_id = item['esp_device_id']
+            #     value = float(item['value'])
+            #     timestamp_device = parse_datetime(item['timestamp_device'])
+            #     if timestamp_device is None:
+            #         raise ValueError("Invalid timestamp format")
+            #     # Láº¥y sensor
+            #     sensor = Sensor.objects.get(sensor_id=sensor_id)
+            #     esp = EspDevice.objects.get(esp_id=esp_id)
+            #     raspberry = esp.raspberry_pi  # náº¿u cÃ³ ForeignKey tá»« ESP vá» RaspberryPi    
+            #     reading = SensorReading.objects.create(
+            #         sensor=sensor,
+            #         esp_device=esp,
+            #         raspberry_pi=raspberry,
+            #         value=value,
+            #         timestamp_device=timestamp_device
+            #     )
+            # return JsonResponse({"status": "ok"}, status=200)
+            sensor_ids = {item['sensor_id'] for item in data}
+            esp_ids = {item['esp_device_id'] for item in data}
+
+            sensors = {s.sensor_id: s for s in Sensor.objects.filter(sensor_id__in=sensor_ids)}
+            esps = {e.esp_id: e for e in EspDevice.objects.select_related('raspberry_pi').filter(esp_id__in=esp_ids)}
+
+            readings_to_create = []
+
+            for item in data:
+                sensor_id = item['sensor_id']
+                esp_id = item['esp_device_id']
+                value = float(item['value'])
+                timestamp_device = parse_datetime(item['timestamp_device'])
+                if timestamp_device is None:
+                    raise ValueError("Invalid timestamp format")
+
+                sensor = sensors.get(sensor_id)
+                esp = esps.get(esp_id)
+
+                if not sensor or not esp:
+                    continue  # hoặc raise error nếu cần nghiêm ngặt
+
+                readings_to_create.append(SensorReading(
+                    sensor=sensor,
+                    esp_device=esp,
+                    raspberry_pi=esp.raspberry_pi,
+                    value=value,
+                    timestamp_device=timestamp_device
+                ))
+
+            SensorReading.objects.bulk_create(readings_to_create)
+            return JsonResponse({"status": "ok"}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)    
+
+
+
+
+
+
+
+
+
+
+
 
 #----------------test----------------------------------------------------------------------------
 
