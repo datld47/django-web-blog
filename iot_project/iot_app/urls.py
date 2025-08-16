@@ -6,25 +6,26 @@ urlpatterns = [
     
     path("",views.StartingPageView.as_view(),name="starting-page"),
     path("api/sensor-updates/",views.SensorUpdateAPIView.as_view(),name='sensor-update-page'),
-    ##################################################################################################################
+    ###########################################################################################################################
     path('api/raspberry_pi/<str:pi_id>/',views.RaspberryDetailView.as_view(),name='raspi-detail-page'),
     path('api/raspberry_pi/info_and_monitor_partial/<str:pi_id>/',views.RaspberryInfoAndMonitorPartialView.as_view(),name='raspi-info-monitor-page'),
     path('api/raspberry_pi/metric_history_bundle/<str:pi_id>/',views.RaspberryChartsView.as_view(),name='raspi-history-page'),
     path('api/raspberry_pi/post_data/<str:pi_id>/', views.RaspberryDataIngestionView.as_view(), name='raspi-post-data'),
-    ###################################################################################################################
+    ###########################################################################################################################
     path('api/esp_device/<str:esp_id>/',views.EspDetailView.as_view(),name='esp-detail-page'),
     path('api/esp/charts/<str:esp_id>/',views.EspChartsView.as_view(),name='esp-charts-page'),
     path('api/esp/sensors/<str:esp_id>/',views.EspSensorsView.as_view(),name='esp-sensors-page'),
-    ##################################################################################################################
+    ##########################################################################################################################
     path('api/sensor/<str:sensor_id>/',views.SensorDetailView.as_view(),name='sensor-detail-page'),
     path('api/sensor/charts/<str:sensor_id>/',views.SensorChartView.as_view(),name='sensor-charts-page'),
     path('api/sensor/table/<str:sensor_id>/',views.SensorTableView.as_view(),name='sensor-table-page'),
-    #####################################################################################################################
+    ##########################################################################################################################
     path('sensor/temperature/config/',views.SensorTemperatureConfigView.as_view(),name='sensor_temperature_config_page'),
     path('sensor/sound/config/',views.SensorSoundConfigView.as_view(),name='sensor_sound_config_page'),
     path('sensor/vibration/config/',views.SensorVibrationConfigView.as_view(),name='sensor_vibration_config_page'), 
     ###########################################################################################################################
-    
-    ###################django- local  gui du lieu len#########################################################################
     path('api/sync_data/',views.DjangoLocalSyncDataView.as_view(),name='django-local-sync-data'), 
+    path('api/command/',views.CommandView.as_view(),name='command-view-page'),
+    path('api/ttyd/<str:pi_id>/',views.TTYDView.as_view(),name='ttyd-view-page'),
+    path('api/closed_ttyd/<str:pi_id>/',views.ClosedTTYDView.as_view(),name='closed_ttyd-view-page'),
 ]

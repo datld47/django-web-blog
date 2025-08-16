@@ -1,0 +1,29 @@
+
+<div class="ssh__buttons">
+
+    <button id="js_open_ssh">Mở SSH</button>
+
+    <button id="js-close_ssh">Đóng SSH</button>
+
+</div>
+
+<div class="ssh__status">
+    <p id= "js_ssh_status">{{pi.pi_id}}: ...</p>
+</div>
+
+<div class="ssh__iframe">
+
+    <div class="ssh__iframe--command">
+    
+    </div>
+
+    <iframe class="ssh__iframe--content" id="js-ssh-iframe-content"
+            src=""
+            width="800" 
+            height="600" 
+            style="border:none;">
+    </iframe>
+
+</div>
+
+  <input type="hidden" id="ssh_pi_id" value="{{ pi.pi_id }}">

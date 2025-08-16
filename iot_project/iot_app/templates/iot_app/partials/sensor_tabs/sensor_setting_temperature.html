@@ -11,6 +11,16 @@
       </div>
     {% endif %}
 
+    {% if proxy_ok == True  %}
+      <div class="message" style="color: green; font-weight: bold;">
+        Gửi đến proxy thành công
+      </div>
+    {% elif  proxy_ok == False %}
+      <div class="message" style="color: red; font-weight: bold;">
+        Gửi đến proxy thất bại
+      </div>
+    {% endif %}
+
   <div>
     <h3>Cấu hình chung</h3>
     <hr>

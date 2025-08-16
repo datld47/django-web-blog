@@ -20,7 +20,9 @@ from django.db.models import Prefetch, Count, Sum, OuterRef, Subquery, CharField
 from .models import RaspberryPi,EspDevice,Sensor,SensorReading,PiMetricHistory,SensorTemperatureConfig,SensorVibrationConfig
 import re
 from .forms import SensorTemperatureConfigForm,SensorSoundConfigForm,SensorVibrationConfigForm
-
+from django.conf import settings
+import requests
+from django.core.cache import cache
 #----------------------------------------function---------------------------------------#
 
 def get_tree_data_for_jstree():
@@ -212,6 +214,21 @@ def parse_search_filter(search_str, field_name="value"):
     else:
         return parse_condition(search_str)
 
+
+def send_command_to_proxy(topic,message):
+
+    proxy_url = settings.HTTP_MQTT_PROXY_URL
+    payload = {
+        "topic": topic,
+        "message": message,
+    }
+    try:
+        response = requests.post(proxy_url, json=payload, timeout=5)
+        print("Proxy response:", response.status_code, response.text)
+        return response.ok  # True nếu HTTP 200–299
+    except requests.RequestException as e:
+        print("Lỗi khi gửi tới proxy:", str(e))
+        return False
 
 #-----------------------------------------tree--------------------------------------------#
 
@@ -492,7 +509,6 @@ class EspSensorsView(View):
         html_content = render_to_string('iot_app/partials/esp_tabs/esp_tabs_sensor.html',context)
         return JsonResponse({'html': html_content})
 
-
 #----------------------------------------------sensor-------------------------------------------#
 class SensorDetailView(View):
     
@@ -750,6 +766,8 @@ class SensorTemperatureConfigView(View):
     
     def post(self,request):
         
+        proxy_ok =False
+        
         sensor_id = request.POST.get("sensor_id")
         sensor = Sensor.objects.get(pk=sensor_id)
         config_instance = sensor.temperature_config  
@@ -762,14 +780,36 @@ class SensorTemperatureConfigView(View):
             sensor_instance=sensor
         )
         
+        
         if form.is_valid():
+            
             form.save()
             print('form hợp lệ - lưu thành công')
             # # Render lại form (có thể đã cập nhật giá trị)
+            
+            pi_id=sensor.esp_device.raspberry_pi.pi_id
+            
+            topic=f"server/pi/command"
+            
+            message={
+                    "pi_id":pi_id,
+                    "command":"config",
+                    "sensor_id":sensor_id,
+                    "sensor_type":sensor.sensor_type,
+                    "config":{
+                        "threshold_low": config_instance.threshold_low,
+                        "threshold_high": config_instance.threshold_high,
+                        "read_interval_seconds": config_instance.read_interval_seconds,
+                    }
+                }
+            
+            proxy_ok= send_command_to_proxy(topic,message)
+            
             rendered_form = render_to_string("iot_app/partials/sensor_tabs/sensor_setting_temperature.html",{
                 "form": form,
                 "sensor": sensor,
-                "error": False
+                "error": False,
+                "proxy_ok":proxy_ok
             }, request=request)
             
             return JsonResponse({"html": rendered_form})
@@ -779,7 +819,8 @@ class SensorTemperatureConfigView(View):
         rendered_form = render_to_string("iot_app/partials/sensor_tabs/sensor_setting_temperature.html", {
                 "form": form,
                 "sensor": sensor,
-                "error":True
+                "error":True,
+                "proxy_ok":proxy_ok
             }, request=request)
             
         return JsonResponse({"html": rendered_form})
@@ -925,18 +966,160 @@ class DjangoLocalSyncDataView(View):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)    
 
+@method_decorator(csrf_exempt, name='dispatch')
+class CommandView(View):
+    def post(self,request):
+        try:
+            print('xu ly ssh request')
+            print(request)
+            data = json.loads(request.body)
+            print(data)
+            
+            command=data.get('command')
+            pi_id=data.get('pi_id')
+            
+            if command=='open-ssh':
+                print('mở ssh')
+                proxy_ok =False
+                
+                topic="server/pi/command"
+                
+                message= {
+                    "pi_id":pi_id,
+                    "command":"pi.ssh__open",
+                    "proxy_ip":settings.HTTP_MQTT_PROXY_HOST,
+                    "proxy_port":7000,
+                    "remote_port":9000,
+                    "local_port":9001}
+            
+                proxy_ok= send_command_to_proxy(topic,message)
+                
+                if proxy_ok:
+                    return JsonResponse({
+                        "status": "ok",
+                        "message": "[open-ssh] push to broker ok"}, status=200)
+                else:
+                    return JsonResponse({
+                        "status": "error",
+                        "message": "[open-ssh] push to broker error"}, status=200)
+  
+            elif command=='close-ssh':
+                
+                print('đóng ssh')
+                proxy_ok =False
+                
+                topic="server/pi/command"
+                
+                message= {
+                    "pi_id":pi_id,
+                    "command":"pi.ssh__close"}
+            
+                proxy_ok= send_command_to_proxy(topic,message)
+                
+                if proxy_ok:
+                    return JsonResponse({
+                        "status": "ok",
+                        "message": "[close-ssh] push to broker ok"}, status=200)
+                else:
+                    return JsonResponse({
+                        "status": "error",
+                        "message": "[close-ssh] push to broker error"}, status=200)
+  
+            else:
+                print('lệnh khác')
+                return JsonResponse({
+                    "status": "ok",
+                    "message": "Đã nhận lệnh đóng ssh"}, status=200)
+        except:
+            return JsonResponse({
+                "status": "error",
+                "message": "lỗi except"}, status=400)
+            
+@method_decorator(csrf_exempt, name='dispatch')
+class TTYDView(View):
+    def post(self, request,pi_id):
+        try:
+            try:
+                get_object_or_404(RaspberryPi, pi_id=pi_id)
+            except:
+                return JsonResponse({"status": "error", "message": "Pi not found"}, status=404)
+            
+            data = json.loads(request.body)
+            url = data.get("url")
+            if not pi_id or not url:
+                return JsonResponse({"status": "error", "message": "Missing pi_id or url"}, status=400)
+
+            cache_key = f"ttyd__{pi_id}"
+            cache.delete(cache_key)
+            cache.set(cache_key, url, timeout=60)  # TTL 60 giây
+
+            return JsonResponse({"status": "ok", "url": url}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    def get(self, request, pi_id):
+        print(f"nhan request TTYDView:{pi_id}")
+        try:
+            try:
+                get_object_or_404(RaspberryPi, pi_id=pi_id)
+            except:
+                return JsonResponse({"status": "error", "message": "Pi not found"}, status=404)
+            
+            url = cache.get(f"ttyd__{pi_id}")
+            if url:
+                return JsonResponse({"status": "ok", "url": url}, status=200)
+
+            return JsonResponse({"status": "pending", "url": None}, status=200)  # giữ 200 cho pooling
+        
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class ClosedTTYDView(View):
+    def post(self, request,pi_id):
+        try:
+            try:
+                get_object_or_404(RaspberryPi, pi_id=pi_id)
+            except:
+                return JsonResponse({"status": "error", "message": "Pi not found"}, status=404)
+            
+            data = json.loads(request.body)
+            closed_status = data.get("closed_status")
+            
+            if not pi_id or not closed_status:
+                return JsonResponse({"status": "error", "message": "Missing pi_id or url"}, status=400)
+            
+            cache_key = f"closed_ttyd__{pi_id}"
+            cache.delete(cache_key)
+            cache.set(cache_key, closed_status, timeout=60)  # TTL 60 giây
+
+            return JsonResponse({"status": "ok","closed_status":closed_status}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    def get(self, request, pi_id):
+        print(f"nhan request TTYDView:{pi_id}")
+        try:
+            try:
+                get_object_or_404(RaspberryPi, pi_id=pi_id)
+            except:
+                return JsonResponse({"status": "error", "message": "Pi not found"}, status=404)
+            
+            closed_status = cache.get(f"closed_ttyd__{pi_id}")
+            
+            if closed_status=='closed':
+                return JsonResponse({"status": "ok", "closed_status": closed_status}, status=200)
+
+            return JsonResponse({"status": "pending", "closed_status": None}, status=200)  # giữ 200 cho pooling
+        
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
-
-
-
-
-
-
-
-
-
-#----------------test----------------------------------------------------------------------------
+    
+#----------------test--------------------------------------------------------------
 
 class PiMetricHistoryView(View):
     
@@ -988,9 +1171,7 @@ class PiMetricHistoryView(View):
             
         except Exception as e:
             return JsonResponse({'error': f'Internal server error: {str(e)}'}, status=500)
-            
-            
-            
+                    
     def _get_metric_unit(self, metric_type):
         """
         Trả về đơn vị hiển thị cho từng loại metric.

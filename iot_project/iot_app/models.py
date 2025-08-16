@@ -83,13 +83,13 @@ class RaspberryPi(models.Model):
         verbose_name_plural = "Raspberry Pis"
     
     def is_online(self):
-            """
-            Xác định liệu Raspberry Pi có đang online hay không dựa vào last_seen.
-            """
-            if self.last_seen:
-                online_threshold_seconds = 5 * 60 
-                return (timezone.now() - self.last_seen).total_seconds() < online_threshold_seconds
-            return False
+        """
+        Xác định liệu Raspberry Pi có đang online hay không dựa vào last_seen.
+        """
+        if self.last_seen:
+            online_threshold_seconds = 5 * 60 
+            return (timezone.now() - self.last_seen).total_seconds() < online_threshold_seconds
+        return False
         
 class EspDevice(models.Model):
     """
@@ -373,9 +373,10 @@ class ExternalServiceConfig(models.Model):
         ('MQTT', 'MQTT Broker'),
         ('SQL', 'SQL Server'),
         ('HTTP_API', 'HTTP API'),
+        {'HTTP_MQTT_PROXY','HTTP to MQTT Proxy Server'}
     ]
     server_name = models.CharField(max_length=200,unique=True, primary_key=True)
-    service_type = models.CharField(max_length=20, choices=SERVICE_TYPE_CHOICES)
+    service_type = models.CharField(max_length=200, choices=SERVICE_TYPE_CHOICES)
     host = models.CharField(max_length=200)
     port = models.PositiveIntegerField(default=1883)
     username = models.CharField(max_length=100, blank=True, null=True)
@@ -384,7 +385,6 @@ class ExternalServiceConfig(models.Model):
     extra_config = models.JSONField(default=dict, blank=True)
     def __str__(self):
         return f"{self.service_type}: {self.server_name} ({self.host}:{self.port})"
-
 
 
 # class Alarm(models.Model):

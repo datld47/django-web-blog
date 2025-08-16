@@ -32,7 +32,7 @@ USE_SETTING_DEFAULT=os.getenv('SETTING_DEFAUT','True').lower()=='true'
 
 
 if USE_SETTING_DEFAULT:
-    ALLOWED_HOSTS=['localhost','127.0.0.1','0.0.0.0','192.168.137.1']
+    ALLOWED_HOSTS=['localhost','127.0.0.1','0.0.0.0','192.168.137.1','*']
     CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:8000','http://localhost:8000']
 else:
     APP_HOST_STR = os.getenv('APP_HOST', 'localhost,127.0.0.1') # Lấy từ biến môi trường
@@ -46,7 +46,6 @@ else:
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'iot_app',
     'nested_admin',
@@ -61,8 +60,6 @@ INSTALLED_APPS = [
 
 if USE_SETTING_DEFAULT == False:
     INSTALLED_APPS.append('storages')
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -214,10 +211,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ###########################################################
 
 if USE_SETTING_DEFAULT:
-    BROKER_HOST='127.0.0.1'
-    BROKER_PORT=1883
+    HTTP_MQTT_PROXY_HOST='34.133.203.78'
+    HTTP_MQTT_PROXY_PORT=5000
     
 else:
-    BROKER_HOST= os.getenv('BROKER_HOST','127.0.0.1')
-    BROKER_PORT= os.getenv('BROKER_PORT',1883)
+    HTTP_MQTT_PROXY_HOST= os.getenv('HTTP_MQTT_PROXY_HOST','127.0.0.1')
+    HTTP_MQTT_PROXY_PORT= os.getenv('HTTP_MQTT_PROXY_PORT',5000)
 
+HTTP_MQTT_PROXY_URL = f"http://{HTTP_MQTT_PROXY_HOST}:{HTTP_MQTT_PROXY_PORT}/publish/"

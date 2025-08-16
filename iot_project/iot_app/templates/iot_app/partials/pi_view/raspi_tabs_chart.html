@@ -1,0 +1,29 @@
+<div class="detail-content-main-chart">
+    <div class="raspi-charts__checkbox--update">
+          <input type="checkbox" id="raspi-charts-checkbox-update" />Tự cập nhật mỗi 5 giây
+    </div>
+    
+    <div clsss="detail-content-main-monitor">
+        
+        <div id="raspi-status-container">
+             {% include "iot_app/partials/pi_view/raspi_status_partial.html" %}
+        </div>
+    </div>
+
+
+    <div class="detail-content-main-chart-container">
+        <div class="chart-container-cpu">
+            <canvas id="cpuUsageChart">placeholder:chart</canvas>
+            <p id="cpuChartLoadingMessage">placeholder: Đang tải biểu đồ CPU Usage...</p> 
+        
+        </div>
+        <div class="chart-container-ram">
+            <canvas id="ramUsageChart">placeholder:chart</canvas>
+            <p id="ramChartLoadingMessage">placehoder:Đang tải biểu đồ Ram Usage...</p>
+        </div>
+        <div class="chart-container-temperature">
+            <canvas id="tmperatureChart">placeholder:chart</canvas>
+            <p id="temperatureChartLoadingMessage">placehoder:Đang tải biểu đồ Ram Usage...</p>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
  // 
 
+ 
 function formatLocalDatetime(isoString) {
     const d = new Date(isoString);
     return d.toLocaleString('vi-VN', {
@@ -58,7 +59,18 @@ const fetchLatestSensorHtmlUpdates = function() {
                     const doc = parser.parseFromString(nodeUpdate.html, 'text/html');
                     updateSensorDetailFromTree(doc);
                 }
-
+                else if(selectedType=='raspberry_pi' && nodeUpdate.id==selectedId)
+                {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(nodeUpdate.html, 'text/html');
+                    updatePiInfoFromTree(doc);
+                }
+                else if(selectedType=='esp_device' && nodeUpdate.id==selectedId)
+                {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(nodeUpdate.html, 'text/html');
+                    updateEspInfoFromTree(doc);
+                }
 
             });
             //Khôi phục vị trí cuộn
@@ -274,6 +286,70 @@ function updateSensorDetailFromTree(doc) {
     }
 }
 
+function updatePiInfoFromTree(doc) {
+
+    // const div = doc.querySelector('.jstree__sensor-node');
+
+    // // Lấy giá trị từ các data-attributes
+    // const sensorName = div.getAttribute('data-sensor-name');
+    // const latestValue = div.getAttribute('data-latest-value');
+    // const sensorType = div.getAttribute('data-sensor-type');
+    // const latestDate=div.getAttribute('data-latest-date');
+    // const local_latestDate=formatLocalDatetime(latestDate)
+    // const status=div.getAttribute('data-sensor-status');
+
+    // console.log(latestValue)
+    // console.log(`latestDate=${latestDate}`)
+    // console.log(`local_latestDate=${local_latestDate}`)
+    // console.log(status)
+
+    // document.getElementById('sensor-detail-info-value').textContent = latestValue;
+    // document.getElementById('sensor-detail-info-lastest-time').textContent = local_latestDate;
+
+    // const statusDot = document.getElementById('js-sensor-status-dot');
+    // const statusText = document.getElementById('js-sensor-status-text');
+
+    // if (status === 'True' || status === true) {
+    //     statusDot.style.backgroundColor = 'green';
+    //     statusText.textContent = 'Đang hoạt động';
+    // } else {
+    //     statusDot.style.backgroundColor = 'red';
+    //     statusText.textContent = 'Không hoạt động';
+    // }
+}
+
+function updateEspInfoFromTree(doc) {
+
+    // const div = doc.querySelector('.jstree__sensor-node');
+
+    // // Lấy giá trị từ các data-attributes
+    // const sensorName = div.getAttribute('data-sensor-name');
+    // const latestValue = div.getAttribute('data-latest-value');
+    // const sensorType = div.getAttribute('data-sensor-type');
+    // const latestDate=div.getAttribute('data-latest-date');
+    // const local_latestDate=formatLocalDatetime(latestDate)
+    // const status=div.getAttribute('data-sensor-status');
+
+    // console.log(latestValue)
+    // console.log(`latestDate=${latestDate}`)
+    // console.log(`local_latestDate=${local_latestDate}`)
+    // console.log(status)
+
+    // document.getElementById('sensor-detail-info-value').textContent = latestValue;
+    // document.getElementById('sensor-detail-info-lastest-time').textContent = local_latestDate;
+
+    // const statusDot = document.getElementById('js-sensor-status-dot');
+    // const statusText = document.getElementById('js-sensor-status-text');
+
+    // if (status === 'True' || status === true) {
+    //     statusDot.style.backgroundColor = 'green';
+    //     statusText.textContent = 'Đang hoạt động';
+    // } else {
+    //     statusDot.style.backgroundColor = 'red';
+    //     statusText.textContent = 'Không hoạt động';
+    // }
+}
+
 /******/
 
 function esp_off_auto_update()
@@ -324,19 +400,191 @@ function offAutoupdate()
 }
 
 /******/
-
 function ProcessNodeRaspberry(nodeId)
 {
-    loadPiCharts(nodeId);
-    loadPiInfoAndMonitor(nodeId);
+    $("#raspi-detail-tabs").tabs({
+        active:0,
+        activate: function (event, ui) {
+               const newIndex = ui.newTab.index();  // Lấy index tab mới được kích hoạt
+                console.log("[esp] event change tab");
+                pi_off_auto_update();
 
-    if(!iot_app.pi_node.PiAutoUpdateInterval )
-    {
-        iot_app.pi_node.PiAutoUpdateInterval = setInterval(function () {
-            loadPiCharts(nodeId);
-            loadPiInfoAndMonitor(nodeId);
-        }, 5000);
+                if (newIndex === 0) {  // Tab thứ 3 (đếm từ 0)
+                    console.log('tab 0')
+                    loadPiCharts(nodeId);
+                    $('#raspi-charts-checkbox-update').prop('checked', false);
+                }
+        }
+    })
+
+
+    const activeIndex = $("#raspi-detail-tabs").tabs("option", "active");
+        
+    if (activeIndex === 0) {
+           loadPiCharts(nodeId);
     }
+    
+    $('#raspi-charts-checkbox-update').on('change', function () {
+    
+        console.log('[raspi-charts-checkbox-update]: event- change')
+
+        if ($(this).is(':checked')) {
+
+            if (!iot_app.pi_node.PiAutoUpdateInterval)
+            {
+                alert("Đã bật tự cập nhập mỗi 5s");
+                iot_app.pi_node.PiAutoUpdateInterval=setInterval(() => {
+                    loadPiCharts(nodeId);
+                }, 5000);
+            }
+        
+        } else 
+        {
+            alert("Đã tắt tự cập nhập");
+            console.log('PiAutoUpdateInterval: stop');
+            pi_off_auto_update();
+        }
+    });
+
+    $('#js_open_ssh').on('click',function(){
+      
+        $('#js_ssh_status').text('Chờ mở SSH')
+        let pi_id = $("#ssh_pi_id").val();
+        console.log('---------------');
+        console.log(pi_id);
+
+        $.ajax({
+                url: "/api/command/",
+                type: "POST",
+                contentType: "application/json", // báo cho server biết là gửi JSON
+                data: JSON.stringify({           // chuyển object thành JSON string
+                    command: 'open-ssh',
+                    pi_id: `${pi_id}`
+                }),
+                dataType: "json", // mong đợi JSON trả về
+            
+                success: function(data){
+                    $('#js_ssh_status').text(data.message)
+                    let status_=data.status;
+                    if (status_=='ok')
+                    {
+                        //-------------------------------------
+                        let ellapse=0;
+                        const pollInterval = setInterval(function() {
+                            $.ajax({
+                                url: `/api/ttyd/${pi_id}/`,
+                                type: "GET",
+                                dataType: "json",
+                                success: function(resp) {
+                                    if(resp.status=='ok')
+                                    {
+                                        ellapse=0;
+                                        console.log(`${resp.url}`);
+                                        clearInterval(pollInterval);
+                                        console.log('close polling');
+                                        $('#js_ssh_status').text(`${resp.url}`)
+                                        $('#js-ssh-iframe-content').attr('src',`${resp.url}`);
+                                    }
+                                    else
+                                    {                                                                         
+                                        ellapse+=1;
+                                        $('#js_ssh_status').text(`pending ${ellapse} s`);      
+                                        if(ellapse>=10)
+                                        {
+                                           
+                                            clearInterval(pollInterval);
+                                            $('#js_ssh_status').text(`timeout: ${ellapse} s`);
+                                            ellapse=0;
+                                        }
+                                    }
+                                },
+                                error: function(xhr) {
+                                    console.log("Chưa sẵn sàng:", xhr.status);
+                                    clearInterval(pollInterval);
+                                }
+                            });
+
+                        }, 1000); // quét mỗi 1 giây
+
+                    }
+                },
+            error: function(xhr, status, error){
+                console.log("Lỗi:", error);
+            }
+        });
+    });
+
+    $('#js-close_ssh').on('click',function(){
+
+       $('#js_ssh_status').text('Chờ đóng SSH')
+       let pi_id = $("#ssh_pi_id").val();
+        console.log('---------------')
+        console.log(pi_id)
+        $.ajax({
+                url: "/api/command/",
+                type: "POST",
+                contentType: "application/json", // báo cho server biết là gửi JSON
+                data: JSON.stringify({           // chuyển object thành JSON string
+                    command: 'close-ssh',
+                    pi_id: `${pi_id}`
+                }),
+                dataType: "json",
+            success: function(data){
+                $('#js_ssh_status').text(data.message);
+
+                ////////////////////////////////////////////////
+                let status_=data.status;
+                if (status_=='ok')
+                {
+                    //-------------------------------------
+                    let ellapse=0;
+                    const pollInterval = setInterval(function() {
+                        $.ajax({
+                            url: `/api/closed_ttyd/${pi_id}/`,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(resp) {
+                                if(resp.status=='ok')
+                                {
+                                    ellapse=0;
+                                    console.log(`${resp.closed_status}`);
+                                    clearInterval(pollInterval);
+                                    console.log('close polling');
+                                    $('#js_ssh_status').text(`${resp.closed_status}`)
+                                    $('#js-ssh-iframe-content').attr('src',"");
+                                }
+                                else
+                                {                                                                         
+                                    ellapse+=1;
+                                    $('#js_ssh_status').text(`pending ${ellapse} s`);      
+                                    if(ellapse>=10)
+                                    {
+                                        clearInterval(pollInterval);
+                                        $('#js_ssh_status').text(`timeout: ${ellapse} s`);
+                                        ellapse=0;
+                                    }
+                                }
+                            },
+                            error: function(xhr) {
+                                console.log("Chưa sẵn sàng:", xhr.status);
+                                clearInterval(pollInterval);
+                            }
+                        });
+
+                    }, 1000); // quét mỗi 1 giây
+
+                }
+
+
+
+                //////////////////////////////////////////////
+
+            },
+            error: function(xhr, status, error){
+                console.log("Lỗi:", error);
+            }
+        });
+    });
 }
 
 /******/
@@ -501,7 +749,6 @@ function ProcessNodeEsp32(nodeId)
 
 function ProcessNodeSensor(nodeId)
 {
-
     /*giao diện tab*/
     $("#sensor-detail-tabs").tabs({
             
@@ -521,7 +768,6 @@ function ProcessNodeSensor(nodeId)
                 else if (newIndex === 1) {
                     console.log('kích hoạt tab 1 - dữ liệu');
                     loadSensorDataTable(nodeId);  // Gọi hàm khởi động bảng dữ liệu
-
                 }
 
                 if (!ui.newPanel.is("#sensor-detail-tabs-setting-control")) {
