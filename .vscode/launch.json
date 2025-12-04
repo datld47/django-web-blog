@@ -11,11 +11,11 @@
             "request": "launch",
             "args": [
                 "runserver",
-                "0.0.0.0:8000"
+                "0.0.0.0:8080"
             ],
             "django": true,
             "autoStartBrowser": false,
-            "program": "${workspaceFolder}\\iot_project\\manage.py"
+            "program": "${workspaceFolder}/iot_project/manage.py"
         },
 
         {

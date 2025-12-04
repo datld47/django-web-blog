@@ -33,7 +33,7 @@ USE_SETTING_DEFAULT=os.getenv('SETTING_DEFAUT','True').lower()=='true'
 
 if USE_SETTING_DEFAULT:
     ALLOWED_HOSTS=['localhost','127.0.0.1','0.0.0.0','192.168.137.1','*']
-    CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:8000','http://localhost:8000']
+    CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:8080','http://localhost:8080']
 else:
     APP_HOST_STR = os.getenv('APP_HOST', 'localhost,127.0.0.1') # Lấy từ biến môi trường
     ALLOWED_HOSTS = [host.strip() for host in APP_HOST_STR.split(',') if host.strip()]
@@ -140,9 +140,9 @@ LANGUAGE_CODE = 'en-us'
 
 if USE_SETTING_DEFAULT:
     # TIME_ZONE = 'Asia/Ho_Chi_Minh'
-    TIME_ZONE = 'UCT'
+    TIME_ZONE = 'UTC'
 else:
-    TIME_ZONE = os.getenv('TIME_ZONE','UCT')
+    TIME_ZONE = os.getenv('TIME_ZONE','UTC')
 
 USE_I18N = True
 USE_TZ = True

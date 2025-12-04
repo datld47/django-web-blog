@@ -7,5 +7,6 @@
     },
     "emmet.includeLanguages": {
         "django-html": "html" // Cho phép Emmet hoạt động trong file Django HTML
-    }
+    },
+    "python-envs.pythonProjects": []
 }
